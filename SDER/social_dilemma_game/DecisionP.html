@@ -18,8 +18,7 @@
 
 <body>
 <div class="narrow-body">
-    <br>
-    <div><b>My Decision{% if treatment == 'PM' %} 1{% endif %}:</b> Tokens Added to the Group Account</div>
+    <div><b>Select Your Decision{% if treatment == 'PM' %} 1{% endif %}:</b> Tokens Added to the Group Account</div>
     <div class="slider-container-1">
         <div class="slider" id="slider1"></div>
     </div>
@@ -27,14 +26,16 @@
     <hr>
 
     <p>
-        Choose a hypothetical average decision {% if treatment == 'PM' %} 1{% endif %} of the other 3 members in
-        your group to see how this affects account values:
+        Below, choose a hypothetical average Decision {% if treatment == 'PM' %} 1{% endif %} of the other 3 members in
+        your group to see how this would affect account values and earnings. This selection below is hypothetical and
+        will not affect your true earnings.
     </p>
-
+<br>
+<div><b>Average Decision of Others:</b></div>
     <div class="slider-container-1">
         <div class="slider" id="slider2"></div>
     </div>
-
+<br>
 <div><b>Resulting Account Values:</b></div>
 
     <br>
@@ -43,8 +44,8 @@
         <thead>
             <tr>
                 <th>Account</th>
-                <th>Tokens</th>
-                <th>Value</th>
+                <th><span class="tokens-dark">Tokens</span></th>
+                <th>Earnings from Account in <span class="ecu-dark">ECU</span></th>
             </tr>
         </thead>
         <tbody>

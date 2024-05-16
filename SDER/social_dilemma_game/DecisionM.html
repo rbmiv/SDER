@@ -9,57 +9,52 @@
         Decision Page
     {% endif %}
     {% if treatment == 'PM' %}
-        Decision 1
+        Decision 2
     {% endif %}
 {{ endblock }}
 
 {{ block content }}
 <body>
+
+    <p>Use the sliders to select your Decision{% if treatment == 'PM' %} 2{% endif %} below for each potential
+      balance of the Group Account.</p>
   <table class="tg">
     <thead>
       <tr>
-            {% if treatment == 'PM' %}
-        <th class="tg-ttyz">Average Tokens Moved to
-          <br> Group Account in Decision 1
-        </th>
-            {% endif %}
+        {% if treatment == 'PM' %}
+        <th colspan="2">Total of Others' Decision 1</th>
+        {% endif %}
 
-            {% if treatment == 'M' %}
-        <th class="tg-ttyz">Tokens in Group Account</th>
-
-            {% endif %}
-        <th class="tg-ttyz">
-            Group Account Value
+        {% if treatment == 'M' %}
+        <th colspan="2">Group Account Starting Balance</th>
+        {% endif %}
+        <th rowspan="2" class="slider-column">
+          Your Decision{% if treatment == 'PM' %} 2{% endif %}:
+          <br>Move <span class="tokens-dark">Tokens</span> to or from Group Account
         </th>
-        <th class="tg-ttyz">Your Decision {% if treatment == 'PM' %} 2{% endif %}:
-          <br>Amount you wish to move to or from Group Account
-          <br>(Tokens)
-        </th>
-        <th class="tg-ttyz">Value Change to
-          <br>Group Account
-        </th>
-        <th class="tg-ttyz">Your Individual
-          <br> Account (Tokens)
-        </th>
-        <th class="tg-ttyz">Your Individual
-          <br> Account (Value)
-        </th>
-
+        <th rowspan="2">Change to <br>Group  Account <br><span class="ecu-dark">(ECU)</span></th>
+        <th colspan="2">Your Individual Account</th>
+      </tr>
+      <tr>
+        <th><span class="tokens-dark">Tokens</span></th>
+        <th><span class="ecu-dark">ECU</span></th>
+        <th><span class="tokens-dark">Tokens</span></th>
+        <th><span class="ecu-dark">ECU</span></th>
       </tr>
     </thead>
     <tbody>
       {% for i in range(0,11) %}
       <tr>
         <td class="tg-yj5y" id="token-info-{{ i }}"></td>
-        <td class="tg-yj5y" id="ecu-info-{{ i }}"></td>
-        <td class="tg-3xi5">
+        <td class="tg-3xi5" id="ecu-info-{{ i }}"></td>
+        <td class="slider-column">
           <div class="slider-container-2">
             <div id="slider{{ i }}" class="dynamic-slider"></div>
           </div>
         </td>
-        <td class="tg-yj5y" id="group-account-change-row-{{ i }}">0</td>
-        <td class="tg-yj5y" id="remaining-tokens-row-{{ i }}">10</td>
-        <td class="tg-yj5y" id="remaining-ecu-row-{{ i }}">10</td>
+        <td class="tg-3xi5" id="group-account-change-row-{{ i }}">0</td>
+        <td class="tg-3xi5" id="remaining-tokens-row-{{ i }}">10</td>
+        <td class="tg-3xi5" id="remaining-ecu-row-{{ i }}">10</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -84,6 +79,9 @@
 <script src="{% static 'global/nouislider.min.js' %}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    const treatment = "{{ treatment }}";
+    const step = treatment === "PM" ? 3 : 4;
+
     for (let i = 0; i < 11; i++) {
         let j, k, j_ecu, k_ecu;
         if (i === 0) {
@@ -92,10 +90,10 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById(`token-info-${i}`).innerText = `${j} tokens`;
             document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
         } else {
-            j = (i - 1) * 4 + 1;
-            k = i * 4;
-            j_ecu = j*3/4;
-            k_ecu = k*3/4;
+            j = (i - 1) * step + 1;
+            k = i * step;
+            j_ecu = j * 3 / 4;
+            k_ecu = k * 3 / 4;
             document.getElementById(`token-info-${i}`).innerText = `${j} to ${k} tokens`;
             document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
         }
@@ -168,5 +166,3 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 {{ endblock }}
-
-

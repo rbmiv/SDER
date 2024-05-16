@@ -35,7 +35,9 @@ body {
   position: relative;
   top: -10px;
   height: 30px;
-    padding: 10px 10px 40px;
+    padding-bottom:40px;
+    padding-left:5px;
+    padding-right:5px;
 }
 
 
@@ -89,10 +91,10 @@ body {
 
     .tg th {
       font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 14px;
+      font-size: 12pt;
       overflow: hidden;
-      padding: 5px 5px;
-      word-break: normal;
+        padding: 0 4px;
+        word-break: normal;
       text-align: center;
       border-color: black;
       border-style: solid;
@@ -102,6 +104,7 @@ body {
     .tg th {
       background-color: darkgray;
       font-weight: bold;
+        padding: 0 15px;
     }
 
     .tg .tg-yj5y {
@@ -131,7 +134,7 @@ body {
 
 .example-table th {
     font-family: "Segoe UI", Arial, sans-serif;
-    font-size: 14px;
+    font-size: 12pt;
     overflow: hidden;
     padding: 5px 5px;
     word-break: normal;
@@ -151,9 +154,6 @@ body {
     background-color: #ffffff;
 }
 
-ul li {
-    margin-bottom: 10px; /* Adjust the value as needed for the desired padding */
-}
 
 .math {
     font-family: serif;
@@ -181,5 +181,29 @@ ul li {
 
 .otree-title.page-header{
     color: #0d6dfb;
+    padding:0;
 }
 
+.slider-column{
+    width:400px;
+}
+
+.ecu{
+    color: #2abf2f;
+    font-weight:bold;
+}
+
+.ecu-dark{
+    color: #1c801f;
+    font-weight:bold;
+}
+
+.tokens{
+    color: #da810c;
+    font-weight:bold;
+}
+
+.tokens-dark{
+    color: #bf710b;
+    font-weight:bold;
+}

@@ -34,38 +34,44 @@
     <table class="example-table">
         <tr>
             <th class="example-table-header" rowspan="2">Example</th>
-            <th class="example-table-header" colspan="1">Decision</th>
-            <th class="example-table-header" colspan="2">Change in Value (ECUs)</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision:
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
         </tr>
         <tr>
-            <th class="example-table-header">Tokens Moved</th>
             <th class="example-table-header">Individual Account</th>
             <th class="example-table-header">Group Account</th>
         </tr>
         <tr>
             <td class="row-light">A</td>
-            <td class="row-white">0</td>
-            <td class="row-white">0</td>
-            <td class="row-white">0</td>
+            <td class="row-white" style="padding:0 5px;">5 Tokens moved <i>from</i> the Group Account</td>
+            <td class="row-white">+5</td>
+            <td class="row-white">-15</td>
         </tr>
         <tr>
             <td class="row-light">B</td>
-            <td class="row-white">5</td>
-            <td class="row-white">-5</td>
-            <td class="row-white">+15</td>
+            <td class="row-white">0 Tokens moved</td>
+            <td class="row-white">+0</td>
+            <td class="row-white">+0</td>
         </tr>
         <tr>
             <td class="row-light">C</td>
-            <td class="row-white">10</td>
-            <td class="row-white">-10</td>
-            <td class="row-white">+30</td>
+            <td class="row-white">5 Tokens moved <i>to</i> the Group Account</td>
+            <td class="row-white">-5</td>
+            <td class="row-white">+15</td>
         </tr>
     </table>
     <br>
+    After you make your Decision, you will be informed of:
     <p>
-        After you make your decisions, you will be informed of the starting group account, which of your decisions
-        is played, the value of your Individual Account and the Group Account, and your final earnings. You will be
-        paid in U.S. dollars using a conversion rate for $1 for every
+        <ul>
+            <li>The value of your Individual Account</li>
+            <li>The value of the Group Account</li>
+            <li>Your final earnings</li>
+        </ul>
+        You will be paid in U.S. dollars using a conversion rate for $1 for every
         {{exchange_rate}} ECU{{if exchange_rate != 1}} 's {{endif}} of earnings from the experiment. Your total
         earnings will be the final value of tokens (in ECUs) in your own Individual Account from both your selected
         decision and one-fourth of the final value of tokens in the Group Account (in ECUs).
@@ -95,72 +101,14 @@
     <table class="example-table">
         <tr>
             <th class="example-table-header" rowspan="2">Example</th>
-            <th class="example-table-header" colspan="1">Decision</th>
-            <th class="example-table-header" colspan="2">Change in Value (ECUs)</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision:
+                <br>
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
         </tr>
         <tr>
-            <th class="example-table-header">Tokens Moved</th>
-            <th class="example-table-header">Individual Account</th>
-            <th class="example-table-header">Group Account</th>
-        </tr>
-        <tr>
-            <td class="row-light">D</td>
-            <td class="row-white">5 Tokens moved from the Group Account</td>
-            <td class="row-white">+5</td>
-            <td class="row-white">-15</td>
-        </tr>
-        <tr>
-            <td class="row-light">E</td>
-            <td class="row-white">0 Tokens moved</td>
-            <td class="row-white">+0</td>
-            <td class="row-white">+0</td>
-        </tr>
-        <tr>
-            <td class="row-light">F</td>
-            <td class="row-white">5 Tokens moved to the Group Account</td>
-            <td class="row-white">-5</td>
-            <td class="row-white">+15</td>
-        </tr>
-    </table>
-        <br>
-    <p>
-        After you make your decisions, you will be informed of the value of your Individual Account and the Group
-        Account, and your final earnings. You will be paid in U.S. dollars using a conversion rate for $1 for every
-        {{exchange_rate}} ECU{{if exchange_rate != 1}} 's {{endif}} of earnings from the experiment. Your total
-        earnings will be the final value of tokens (in ECUs) in your own Individual Account from both your selected
-        decision and one-fourth of the final value of tokens in the Group Account (in ECUs).
-    </p>
-
-{{ endif }}
-
-{{ if treatment == 'PM' }}
-    <p>
-        <b>Three examples</b> illustrate how the tokens moved to the Group Account are related to the values of the
-        Individual Account and Group Account. For each example, we show how the value of the Individual and Group
-        Account change in a corresponding table.
-    </p>
-
-    <b>Decision 1</b>
-    <ul>
-        <li><i>Example A:</i> If a person adds 0 tokens to the Group Account, that reduces the value of their
-            Individual Account by 0 ECUs and adds <span class="math">0 &times; 3 = 0</span> ECUs to the value
-            of the Group Account.</li>
-        <li><i>Example B:</i> If a person adds 5 tokens to the Group Account, that reduces the value of their
-            Individual Account by 5 ECUs and adds <span class="math">5 &times; 3 = 15</span> ECUs to the value
-            of the Group Account.</li>
-        <li><i>Example C:</i> If a person adds 10 tokens to the Group Account, that reduces the value of their
-            Individual Account by 10 ECUs and adds <span class="math">10 &times; 3 = 30</span> ECUs to the value
-            of the Group Account.</li>
-    </ul>
-
-    <table class="example-table">
-        <tr>
-            <th class="example-table-header" rowspan="2">Example</th>
-            <th class="example-table-header" colspan="1">Decision 1</th>
-            <th class="example-table-header" colspan="2">Change in Value (ECUs)</th>
-        </tr>
-        <tr>
-            <th class="example-table-header">Tokens Moved</th>
             <th class="example-table-header">Individual Account</th>
             <th class="example-table-header">Group Account</th>
         </tr>
@@ -184,7 +132,76 @@
         </tr>
     </table>
         <br>
-    <b>Decision 2</b>
+    <p>
+        After you make your decisions, you will be informed of:
+        <ul>
+            <li>The value of your Individual Account </li>
+            <li>The value of the Group Account</li>
+            <li>Your final earnings</li>
+        </ul>
+        You will be paid in U.S. dollars using a conversion rate for $1 for every
+        {{exchange_rate}} ECU{{if exchange_rate != 1}} 's {{endif}} of earnings from the experiment. Your total
+        earnings will be the final value of tokens (in ECUs) in your own Individual Account from both your selected
+        decision and one-fourth of the final value of tokens in the Group Account (in ECUs).
+    </p>
+
+{{ endif }}
+
+{{ if treatment == 'PM' }}
+    <p>
+        <b>Three examples</b> illustrate how the tokens moved to the Group Account are related to the values of the
+        Individual Account and Group Account. For each example, we show how the value of the Individual and Group
+        Account change in a corresponding table.
+    </p>
+
+  <div class="decision-header"> Decision 1 </div>
+    <ul>
+        <li><i>Example A:</i> If a person adds 0 tokens to the Group Account, that reduces the value of their
+            Individual Account by 0 ECUs and adds <span class="math">0 &times; 3 = 0</span> ECUs to the value
+            of the Group Account.</li>
+        <li><i>Example B:</i> If a person adds 5 tokens to the Group Account, that reduces the value of their
+            Individual Account by 5 ECUs and adds <span class="math">5 &times; 3 = 15</span> ECUs to the value
+            of the Group Account.</li>
+        <li><i>Example C:</i> If a person adds 10 tokens to the Group Account, that reduces the value of their
+            Individual Account by 10 ECUs and adds <span class="math">10 &times; 3 = 30</span> ECUs to the value
+            of the Group Account.</li>
+    </ul>
+
+    <table class="example-table">
+        <tr>
+            <th class="example-table-header" rowspan="2">Example</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision 1:
+                <br>
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
+        </tr>
+        <tr>
+            <th class="example-table-header">Individual Account</th>
+            <th class="example-table-header">Group Account</th>
+        </tr>
+        <tr>
+            <td class="row-light">A</td>
+            <td class="row-white">0</td>
+            <td class="row-white">0</td>
+            <td class="row-white">0</td>
+        </tr>
+        <tr>
+            <td class="row-light">B</td>
+            <td class="row-white">5</td>
+            <td class="row-white">-5</td>
+            <td class="row-white">+15</td>
+        </tr>
+        <tr>
+            <td class="row-light">C</td>
+            <td class="row-white">10</td>
+            <td class="row-white">-10</td>
+            <td class="row-white">+30</td>
+        </tr>
+    </table>
+        <br>
+ <div class="decision-header"> Decision 2 </div>
     <ul>
         <li><i>Example D:</i> If a person subtracts 5 tokens from the Group Account, that increases the value of
             their own Individual Account by 5 ECUs and reduces the value of the Group Account by
@@ -199,17 +216,20 @@
     <table class="example-table">
         <tr>
             <th class="example-table-header" rowspan="2">Example</th>
-            <th class="example-table-header" colspan="1">Decision 2</th>
-            <th class="example-table-header" colspan="2">Change in Value (ECUs)</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision 2:
+                <br>
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
         </tr>
         <tr>
-            <th class="example-table-header">Tokens Moved</th>
             <th class="example-table-header">Individual Account</th>
             <th class="example-table-header">Group Account</th>
         </tr>
         <tr>
             <td class="row-light">D</td>
-            <td class="row-white">5 Tokens moved from the Group Account</td>
+            <td class="row-white" style="padding:0 5px;">5 Tokens moved <i>from</i> the Group Account</td>
             <td class="row-white">+5</td>
             <td class="row-white">-15</td>
         </tr>
@@ -221,16 +241,24 @@
         </tr>
         <tr>
             <td class="row-light">F</td>
-            <td class="row-white">5 Tokens moved to the Group Account</td>
+            <td class="row-white">5 Tokens moved <i>to</i> the Group Account</td>
             <td class="row-white">-5</td>
             <td class="row-white">+15</td>
         </tr>
     </table>
     <br>
+
+<div class="decision-header"> Results </div>
     <p>
-        After Decision 2, you will be informed of the average Decision 1, and which of your decisions is played in
-        Decision 2, the value of your Individual Account and the Group Account, and your final earnings. You will
-        be paid in U.S. dollars using a conversion rate for $1 for every
+        After Decision 2, you will be informed of:
+        <ul>
+            <li>The average Decision 1 of the other members in your group</li>
+            <li>Which of your decisions is played for Decision 2</li>
+            <li>The value of your Individual Account</li>
+            <li>The value of the Group Account</li>
+            <li>Your final earnings</li>
+        </ul>
+       You will be paid in U.S. dollars using a conversion rate for $1 for every
         {{exchange_rate}} ECU{{if exchange_rate != 1}} 's {{endif}} of earning from the experiment. Your total
         earnings will be the final value of tokens (in ECUs) in your own Individual Account from both Decision 1
         and Decision 2 plus one-fourth of the final value of tokens in the Group Account (in ECUs).
@@ -238,8 +266,8 @@
 {{ endif }}
 
 <p>
-    Once you are sure that you understand these instructions, <b>click</b> on the Finished Reading Instructions
-    box in the upper left corner of your monitor screen to signal that you are ready to make your decisions.
+    Once you are sure that you understand these instructions, <b>click "next" to signal you are ready </b>
+    to make your decisions.
 </p>
 
 {{ next_button }}
