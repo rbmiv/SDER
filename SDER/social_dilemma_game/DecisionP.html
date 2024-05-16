@@ -1,0 +1,162 @@
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/nouislider.css' }}"/>
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{ endblock }}
+
+{{ block title }}
+    <div class="narrow-body">
+    {% if treatment == 'P' %}
+        Decision Page
+    {% endif %}
+    {% if treatment == 'PM' %}
+        Decision 1
+    {% endif %}
+    </div>
+{{ endblock }}
+
+{{ block content }}
+
+<body>
+<div class="narrow-body">
+    <br>
+    <div><b>My Decision{% if treatment == 'PM' %} 1{% endif %}:</b> Tokens Added to the Group Account</div>
+    <div class="slider-container-1">
+        <div class="slider" id="slider1"></div>
+    </div>
+
+    <hr>
+
+    <p>
+        Choose a hypothetical average decision {% if treatment == 'PM' %} 1{% endif %} of the other 3 members in
+        your group to see how this affects account values:
+    </p>
+
+    <div class="slider-container-1">
+        <div class="slider" id="slider2"></div>
+    </div>
+
+<div><b>Resulting Account Values:</b></div>
+
+    <br>
+
+    <table class="tg">
+        <thead>
+            <tr>
+                <th>Account</th>
+                <th>Tokens</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>Individual</b></td>
+                <td id="individualTokens">10</td>
+                <td id="individualECU"></td>
+            </tr>
+            <tr>
+                <td><b>Group</b></td>
+                <td id="groupTokens"></td>
+                <td id="groupECU"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Hidden input field for player.p -->
+    <input type="hidden" name="p" id="player_p" value="0">
+    {{ next_button }}
+</div>
+</body>
+
+{{ endblock }}
+
+{{ block script }}
+    <script src="{% static 'global/nouislider.min.js' %}"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let initialTokens = 10; // Assuming 10 initial tokens in the individual account
+
+        // Initialize noUiSlider for slider1
+        let slider1 = document.getElementById("slider1");
+        noUiSlider.create(slider1, {
+            start: [0],
+            range: {
+                'min': 0,
+                'max': 10
+            },
+            pips: {
+                mode: "steps",
+                density: 25
+            },
+            step: 1
+        });
+
+        // Initialize noUiSlider for slider2
+        let slider2 = document.getElementById("slider2");
+        noUiSlider.create(slider2, {
+            start: [0],
+            range: {
+                'min': 0,
+                'max': 10
+            },
+            pips: {
+                mode: "steps",
+                density: 25
+            },
+            step: 1
+        });
+
+        function updateValues() {
+            const myDecision1 = parseFloat(slider1.noUiSlider.get());
+            const averageDecision1 = parseFloat(slider2.noUiSlider.get());
+
+            // Update the hidden input field with the value of slider1
+            document.getElementById('player_p').value = myDecision1;
+
+            // Calculations
+            const individualTokens = initialTokens - myDecision1;
+            const groupTokens = (averageDecision1 * 3) + myDecision1;
+            const individualECU = individualTokens * 1; // Assuming ECU value is double the token value
+            const groupECU = groupTokens * 3; // Assuming ECU value is double the token value
+
+            // Updating Table Values
+            document.getElementById('individualTokens').textContent = individualTokens + " Tokens";
+            document.getElementById('individualECU').textContent = "" + individualECU + " ECU to you";
+            document.getElementById('groupTokens').textContent = groupTokens + " Tokens";
+            document.getElementById('groupECU').textContent =groupECU/4 + " ECU to each group member";
+        }
+
+        // Attach the updateValues function to the 'update' event for both sliders
+        slider1.noUiSlider.on("update", function () {
+            updateValues();
+        });
+
+        slider2.noUiSlider.on("update", function () {
+            updateValues();
+        });
+
+        // Call updateValues initially to set the default values
+        updateValues();
+    });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function highlightActivePip(slider) {
+            let pips = slider.querySelectorAll('.noUi-value');
+            pips.forEach(pip => pip.classList.remove('active-pip'));
+            let value = parseInt(slider.noUiSlider.get());
+            let activePip = slider.querySelector(`.noUi-value[data-value="${value}"]`);
+            if (activePip) {
+                activePip.classList.add('active-pip');
+            }
+        }
+
+        let sliders = document.querySelectorAll('.slider');
+        sliders.forEach((slider, index) => {
+            slider.noUiSlider.on('update', function () {
+                highlightActivePip(slider);
+            });
+            highlightActivePip(slider); // Initial call to set the active pip
+        });
+    });
+    </script>
+{{ endblock }}

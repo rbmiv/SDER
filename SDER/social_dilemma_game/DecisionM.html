@@ -1,0 +1,172 @@
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/nouislider.css' }}"/>
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{ endblock }}
+
+{{ block title }}
+
+    {% if treatment == 'M' %}
+        Decision Page
+    {% endif %}
+    {% if treatment == 'PM' %}
+        Decision 1
+    {% endif %}
+{{ endblock }}
+
+{{ block content }}
+<body>
+  <table class="tg">
+    <thead>
+      <tr>
+            {% if treatment == 'PM' %}
+        <th class="tg-ttyz">Average Tokens Moved to
+          <br> Group Account in Decision 1
+        </th>
+            {% endif %}
+
+            {% if treatment == 'M' %}
+        <th class="tg-ttyz">Tokens in Group Account</th>
+
+            {% endif %}
+        <th class="tg-ttyz">
+            Group Account Value
+        </th>
+        <th class="tg-ttyz">Your Decision {% if treatment == 'PM' %} 2{% endif %}:
+          <br>Amount you wish to move to or from Group Account
+          <br>(Tokens)
+        </th>
+        <th class="tg-ttyz">Value Change to
+          <br>Group Account
+        </th>
+        <th class="tg-ttyz">Your Individual
+          <br> Account (Tokens)
+        </th>
+        <th class="tg-ttyz">Your Individual
+          <br> Account (Value)
+        </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in range(0,11) %}
+      <tr>
+        <td class="tg-yj5y" id="token-info-{{ i }}"></td>
+        <td class="tg-yj5y" id="ecu-info-{{ i }}"></td>
+        <td class="tg-3xi5">
+          <div class="slider-container-2">
+            <div id="slider{{ i }}" class="dynamic-slider"></div>
+          </div>
+        </td>
+        <td class="tg-yj5y" id="group-account-change-row-{{ i }}">0</td>
+        <td class="tg-yj5y" id="remaining-tokens-row-{{ i }}">10</td>
+        <td class="tg-yj5y" id="remaining-ecu-row-{{ i }}">10</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <input type="hidden" name="m0" id="player_m0" value="0">
+  <input type="hidden" name="m1" id="player_m1" value="0">
+  <input type="hidden" name="m2" id="player_m2" value="0">
+  <input type="hidden" name="m3" id="player_m3" value="0">
+  <input type="hidden" name="m4" id="player_m4" value="0">
+  <input type="hidden" name="m5" id="player_m5" value="0">
+  <input type="hidden" name="m6" id="player_m6" value="0">
+  <input type="hidden" name="m7" id="player_m7" value="0">
+  <input type="hidden" name="m8" id="player_m8" value="0">
+  <input type="hidden" name="m9" id="player_m9" value="0">
+  <input type="hidden" name="m10" id="player_m10" value="0">
+  <br>
+  {{ next_button }}
+</body>
+{{ endblock }}
+
+{{ block script }}
+<script src="{% static 'global/nouislider.min.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    for (let i = 0; i < 11; i++) {
+        let j, k, j_ecu, k_ecu;
+        if (i === 0) {
+            j = 0;
+            j_ecu = 0;
+            document.getElementById(`token-info-${i}`).innerText = `${j} tokens`;
+            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
+        } else {
+            j = (i - 1) * 4 + 1;
+            k = i * 4;
+            j_ecu = j*3/4;
+            k_ecu = k*3/4;
+            document.getElementById(`token-info-${i}`).innerText = `${j} to ${k} tokens`;
+            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
+        }
+
+        let slider = document.getElementById(`slider${i}`);
+        let sliderPercentage = ((10 + i) / 20) * 100;
+        slider.style.width = `${sliderPercentage}%`;
+
+        let initialTokens = 10; // Assuming 10 initial tokens in the individual account
+
+        noUiSlider.create(slider, {
+            start: [0],
+            connect: false,
+            animate: false,
+            pips: {
+                mode: "steps",
+                density: 25
+            },
+            range: {
+                min: -i, // Minimum is negative of the average tokens for that row
+                max: 10
+            },
+            step: 1
+        });
+
+        // Each slider needs its own reference to an active pip, so we use an array or object to store them
+        let activePips = []; // Initialize an array to keep track of active pips for each slider
+
+        slider.noUiSlider.on("update", function (values, handle) {
+            let sliderValue = parseInt(values[handle]);
+            let remainingTokens = initialTokens - sliderValue + " Tokens";
+            let remainingECU = initialTokens - sliderValue + " ECU";
+            let changeToGroupAccount = sliderValue * 3 + " ECU"; // The change to the group account is three times the slider value
+
+            // Update table values for this row
+            document.getElementById(`remaining-tokens-row-${i}`).innerText = remainingTokens;
+            document.getElementById(`remaining-ecu-row-${i}`).innerText = remainingECU;
+            document.getElementById(`group-account-change-row-${i}`).innerText = changeToGroupAccount;
+
+            // Update the hidden input field with the slider value
+            document.getElementById(`player_m${i}`).value = sliderValue;
+
+            // Highlight the active pip logic
+            if (activePips[i]) {
+                activePips[i].classList.remove("active-pip");
+            }
+
+            var dataValue = Math.round(values[0]);
+            activePips[i] = slider.querySelector('.noUi-value[data-value="' + dataValue + '"]');
+
+            if (activePips[i]) {
+                activePips[i].classList.add('active-pip');
+            }
+
+            // Update the resulting group account value
+            if (i === 0) {
+            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
+        } else {
+            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
+        }
+        });
+
+        // Initialize the resulting group account value
+            if (i === 0) {
+            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
+        } else {
+            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
+        }
+    }
+});
+</script>
+{{ endblock }}
+
+

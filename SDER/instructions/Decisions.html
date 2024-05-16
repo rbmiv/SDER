@@ -1,0 +1,163 @@
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{ endblock }}
+
+{{ block title }}
+    <div class="narrow-body">
+    Your Decision{{if treatment == 'PM'}}s{{endif}}
+    </div>
+{{ endblock }}
+{{ block content }}
+<div class="narrow-body">
+
+{{if treatment == 'M'}}
+<b>Starting Balances</b>
+    <p>
+        In this experiment, each participant has an Individual Account, and each group of 4 shares a Group Account.
+        The experiment begins with each Individual Account containing <b>10 tokens</b>. Each token is worth 1 ECU
+        in your Individual Account, for a total value of 10 ECUs. The initial number of tokens in the Group Account
+        is unknown to you, between 0 and 30.
+    </p>
+
+<b>Binding Decisions</b>
+    <p>
+        You will not know the exact balance of the group account until you finish the Decision Task.
+        Therefore, you will have to submit a binding decision for each possible number of tokens in the
+        starting Group Account.
+    </p>
+
+<b>Decision Task</b>
+    <p>
+        Each person will privately choose to move tokens between their Individual Account and the Group Account.
+        Each person can move up to a maximum of 10 tokens to the Group Account from their Individual Account,
+        or a maximum of 1/4 of the tokens in the Group Account to their Individual Account.
+    </p>
+    <ul>
+        <li><b>Tokens added to or removed from the Group Account change the Group Account value by 3 ECUs.</b></li>
+        <li><b>
+            Tokens added to or removed from the Individual Account change the Individual Account value by 1 ECU.
+        </b></li>
+    </ul>
+
+<b> Earnings </b>
+    <p>
+        After all individuals have made their decision, you will be informed of the average group balance and which of
+        your decisions is played, the final Group Account balance, and your earnings from the Group
+        and Individual Accounts. The final value of the Group Account will be divided equally among all individuals
+        in the group. For each individual in the group, their total earnings will be combined with the amount that
+        the individual has remaining in their own Individual Account from Decision 1 and equally distributed final
+        Group Account.
+    </p>
+    <p><b>
+        Your total earnings will be the final value of tokens (in ECUs) in your own Individual Account and
+        one-fourth of the final value of tokens in the Group Account (in ECUs).
+    </b></p>
+
+{{endif}}
+
+{{if treatment == 'P'}}
+<b>Starting Balances</b>
+    <p>
+        In this experiment, each participant has an Individual Account, and each group of 4 shares a Group Account.
+        The experiment begins with each Individual Account containing <b>10 tokens</b>. Each token is worth 1 ECU
+        in your Individual Account, for a total value of 10 ECUs. The Group Account begins with a starting balance
+        of 0 tokens, and therefore has a value of 0 ECUs.
+    </p>
+
+<b>Decision Task</b>
+    <p>
+        Each person will decide independently and privately whether or not to move any of their tokens from their
+        own Individual Account into the Group Account. Each person can move up to a maximum of 10 tokens to the
+        Group Account. Each token that a person adds to the Group Account reduces the value of their Individual
+        Account by 1 ECU. However, each token added to the Group Account by a group member increases the value
+        of the Group Account by 3 ECUs. Each decision must be in whole tokens.
+    </p>
+    <p>
+        Once all individuals in the group have completed the Decision Task, the earnings will be shown.
+    </p>
+
+<b> Earnings </b>
+    <p>
+        After all individuals finish their Decision Task, you will be informed of the average and the total tokens
+        contributed to the Group Account and the final Group Account balance, and your earnings from the Group and
+        Individual Accounts. The final value of the Group Account will be divided equally among all individuals in
+        the group. For each individual in the group, earnings in the Group Account will be combined with the earnings
+        remained in their own Individual Account.
+    </p>
+    <p><b>
+        Your total earnings will be the final value of tokens (in ECUs) in your own Individual Account plus
+        one-fourth of the final value of tokens in the Group Account (in ECUs).
+    </b></p>
+{{endif}}
+
+{{if treatment == 'PM'}}
+<div class="decision-header"> Decision 1 </div>
+
+<b>Starting Balances</b>
+    <p>
+        In this experiment, each participant has an Individual Account, and each group of 4 shares a Group Account.
+        The experiment begins with each Individual Account containing <b>10 tokens</b>. Each token is worth 1 ECU
+        in your Individual Account, for a total value of 10 ECUs. The Group Account begins with a starting balance
+        of 0 tokens, and therefore has a value of 0 ECUs.
+    </p>
+
+<b>Decision Task</b>
+    <p>
+    Each person will decide independently and privately whether to move any of their tokens from their own
+        Individual Account into the Group Account. Each person can move up to a maximum of 10 tokens to the Group
+        Account. Each token that a person adds to the Group Account reduces the value of their Individual Account
+        by 1 ECU. However, each token added to the Group Account by a group member increases the value of the Group
+        Account by 3 ECUs. Each decision must be in whole tokens.
+    </p>
+    <p>
+        Any tokens left in your Individual Account after Decision 1 will be converted to U.S. dollars using a
+        conversion rate of $1 for every [exchange rate] ECUs at the end of the experiment. Tokens left in the
+        Individual Account after Decision 1 cannot be used for Decision 2.
+    </p>
+    <p>
+        Once all individuals in the group have completed Decision 1, the group will move to Decision 2.
+    </p>
+
+
+<div class="decision-header"> Decision 2 </div>
+
+<b>Starting Balances</b>
+    <p>
+        In Decision 2, each individual begins with a starting balance of <b>10 tokens</b> worth 1 ECU each, for a total
+        value of 10 ECUs. Each four-person group begins with the Group Account value determined by Decision 1.
+    </p>
+
+<b>Binding Decisions</b>
+    <p>
+        However, you will not know the total amount of tokens in the Group Account in Decision 1 until you finish
+        Decision 2. Therefore, you will have to submit a binding decision for each possible <i>average</i> number
+        of tokens that other members moved to the Group Account.
+    </p>
+
+<b>Decision Task</b>
+    <p>
+        Each person will privately choose to move tokens between their Individual Account and the Group Account.
+        Each person can move up to a maximum of 10 tokens to the Group Account from their Individual Account,
+        or a maximum of 1/4 of the tokens in the Group Account to their Individual Account.
+    </p>
+    <ul>
+        <li>Tokens added to or removed from the Group Account change the Group Account value by 3 ECUs.</li>
+        <li>Tokens added to or removed from the Individual Account change the Individual Account value by 1 ECU.</li>
+    </ul>
+
+<div class="decision-header"> Earnings </div>
+    <p>
+        After all individuals have made Decision 2, you will be informed of the average Decision 1 and which of your
+        decisions is played in Decision 2, the final Group Account balance, and your earnings from the Group and
+        Individual Accounts. The final value of the Group Account will be divided equally among all individuals in
+        the group. For each individual in the group, those earnings will be combined with the amount that the
+        individual has remaining in their own Individual Account from both Decision 1 and Decision 2.
+    </p>
+    <p><b>
+        Your total earnings will be the final value of tokens (in ECUs) in your own Individual Account from both
+        Decision 1 and Decision 2 plus one-fourth of the final value of tokens in the Group Account (in ECUs).
+    </b></p>
+{{endif}}
+    <div class="next-button">{{ next_button }}</div>
+</div>
+{{ endblock }}

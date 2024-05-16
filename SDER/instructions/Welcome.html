@@ -1,0 +1,54 @@
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{ endblock }}
+
+{{ block title }}
+    <div class="narrow-body">
+    Welcome
+    </div>
+{{ endblock }}
+{{ block content }}
+<div class="narrow-body">
+<b>No Talking Allowed</b>
+<p>
+    Now that the experiment has begun, we ask that you do not communicate with other participants. If you have any
+    questions after we finish reading the instructions, please raise your hand and the experimenter will answer your
+    question in private.
+</p>
+
+<b>Complete Privacy</b>
+<p>
+    This experiment is structured so that no one, including the experimenters or the other participants, will ever
+    know your personal decision or money earnings in the experiment. This is accomplished by giving you the only key
+    to a numbered mailbox that contains a sealed envelope with your earnings inside.
+</p>
+<p>
+    Your privacy is guaranteed because neither your name nor student ID number will be entered into the computer
+    that records your decisions in the experiment. The only identifying information that will be used is the number
+    on the mailbox key that has been given to you. You will collect your money payoffs with privacy by using the key,
+    which opens a mailbox located in the reception room. The key and mailbox are labeled with the same number.
+    You are the only person who knows your key and mailbox number.
+</p>
+
+<b>One Round</b>
+<p>
+    There will be one decision task in this experiment. You will face the decision task only once, so you should
+    take it seriously.
+</p>
+
+<b>Random Matching and Anonymity</b>
+<p>
+    You will be randomly matched with 3 other people to form a group of 4 individuals that will stay the same for
+    the entire decision task.
+</p>
+
+<b>Cash Payoffs</b>
+<p>
+    Your earnings in this experiment are expressed in <i>Experimental Currency Units</i>, which we will refer to as
+    ECUs. At the conclusion of the experiment you will be paid in U.S. dollars using a conversion rate of $1 for every
+    {{exchange_rate}} ECU{{if exchange_rate != 1}} 's {{endif}} of earnings from the experiment.
+</p>
+
+    <div class="next-button">{{ next_button }}</div>
+</div>
+{{ endblock }}
