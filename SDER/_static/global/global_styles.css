@@ -85,6 +85,10 @@ ul{
     background-color: lightgray; /* Change this to your desired color */
 }
 
+.noUi-target:active .noUi-base{
+    background-color: #e3e3e3; /* Change this to your desired color */
+}
+
 .noUi-handle:before,
 .noUi-handle:after {
   display: none;
@@ -231,7 +235,7 @@ ul{
 }
 
 .ecu-dark{
-    color: #1c801f;
+    color: #1c8041;
     font-weight:bold;
 }
 
@@ -241,7 +245,7 @@ ul{
 }
 
 .tokens-dark{
-    color: #bf710b;
+    color: #cc790c;
     font-weight:bold;
 }
 
