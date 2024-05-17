@@ -18,27 +18,38 @@
 
 <body>
 <div class="narrow-body">
-    <div><b>Select Your Decision{% if treatment == 'PM' %} 1{% endif %}:</b> Tokens Added to the Group Account</div>
+    <div class="instructions">
+      Use the slider below to select your Decision{% if treatment == 'PM' %} 1{% endif %}.
+      <br>
+        <b>Remember:</b>
+        <ul id="remember-list">
+          <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+          <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+        </ul>
+    </div>
+
+<div class="decision-1-subsection">Your Decision{% if treatment == 'PM' %} 1{% endif %}</div>
+
     <div class="slider-container-1">
         <div class="slider" id="slider1"></div>
     </div>
 
-    <hr>
 
-    <p>
-        Below, choose a hypothetical average Decision {% if treatment == 'PM' %} 1{% endif %} of the other 3 members in
-        your group to see how this would affect account values and earnings. This selection below is hypothetical and
-        will not affect your true earnings.
-    </p>
 <br>
-<div><b>Average Decision of Others:</b></div>
+    <div class="instructions">
+        Use the slider below to choose a hypothetical average Decision {% if treatment == 'PM' %} 1{% endif %} of
+        the other 3 members in your group. This selection will update the table to show how this would affect account
+        values and earnings. This selection is hypothetical and will not affect your true earnings.
+    </div>
+
+<div class="decision-1-subsection">Average Decision of Others (Hypothetical)</div>
     <div class="slider-container-1">
         <div class="slider" id="slider2"></div>
     </div>
-<br>
-<div><b>Resulting Account Values:</b></div>
 
-    <br>
+
+<br>
+<div class="decision-1-subsection">Resulting Account Values</div>
 
     <table class="tg">
         <thead>
@@ -64,6 +75,7 @@
 
     <!-- Hidden input field for player.p -->
     <input type="hidden" name="p" id="player_p" value="0">
+    <br>
     {{ next_button }}
 </div>
 </body>
@@ -74,6 +86,12 @@
     <script src="{% static 'global/nouislider.min.js' %}"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const rememberList = document.getElementById("remember-list");
+        const items = rememberList.querySelectorAll("li");
+        const itemsArray = Array.from(items);
+        itemsArray.sort(() => Math.random() - 0.5);
+        rememberList.innerHTML = "";
+        itemsArray.forEach(item => rememberList.appendChild(item));
         let initialTokens = 10; // Assuming 10 initial tokens in the individual account
 
         // Initialize noUiSlider for slider1

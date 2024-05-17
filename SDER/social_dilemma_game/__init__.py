@@ -109,7 +109,8 @@ class DecisionM(Page):
     @staticmethod
     def vars_for_template(player):
         treatment = player.participant.treatment
-        return dict(treatment=treatment)
+        p = player.p
+        return dict(treatment=treatment, p=p)
 
 
 class ResultsWaitPage(WaitPage):

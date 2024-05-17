@@ -4,7 +4,6 @@
 {{ endblock }}
 
 {{ block title }}
-
     {% if treatment == 'M' %}
         Decision Page
     {% endif %}
@@ -15,46 +14,47 @@
 
 {{ block content }}
 <body>
-
-    <p>Use the sliders to select your Decision{% if treatment == 'PM' %} 2{% endif %} below for each potential
-      balance of the Group Account.</p>
+    <div class="instructions">
+      Use the sliders to select your Decision{% if treatment == 'PM' %} 2{% endif %} below for each potential
+      balance of the Group Account.
+      <br>
+        <b>Remember:</b>
+        <ul id="remember-list">
+          <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+          <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+        </ul>
+    </div>
   <table class="tg">
     <thead>
       <tr>
         {% if treatment == 'PM' %}
-        <th colspan="2">Total of Others' Decision 1</th>
+        <th class="decision-2-header">Average Decision 1 of <br> Other Group Members</th>
         {% endif %}
 
         {% if treatment == 'M' %}
-        <th colspan="2">Group Account Starting Balance</th>
+        <th class="decision-2-header">Random Number Drawn</th>
         {% endif %}
-        <th rowspan="2" class="slider-column">
-          Your Decision{% if treatment == 'PM' %} 2{% endif %}:
-          <br>Move <span class="tokens-dark">Tokens</span> to or from Group Account
+
+        <th class="decision-2-header">Group Account <br>Starting Balance</th>
+        <th >
+          <span class="decision-2-header">Your Decision{% if treatment == 'PM' %} 2{% endif %}:</span>
+          <br>
+          <span style="font-size:16pt;font-weight:bold;">Move Tokens to or from the Group Account</span>
         </th>
-        <th rowspan="2">Change to <br>Group  Account <br><span class="ecu-dark">(ECU)</span></th>
-        <th colspan="2">Your Individual Account</th>
       </tr>
       <tr>
-        <th><span class="tokens-dark">Tokens</span></th>
-        <th><span class="ecu-dark">ECU</span></th>
-        <th><span class="tokens-dark">Tokens</span></th>
-        <th><span class="ecu-dark">ECU</span></th>
       </tr>
     </thead>
     <tbody>
       {% for i in range(0,11) %}
       <tr>
-        <td class="tg-yj5y" id="token-info-{{ i }}"></td>
-        <td class="tg-3xi5" id="ecu-info-{{ i }}"></td>
+        <td class="random-number" id="random-number-{{ i }}"></td>
+        <td id="token-info-{{i}}"></td>
         <td class="slider-column">
           <div class="slider-container-2">
-            <div id="slider{{ i }}" class="dynamic-slider"></div>
+            <div id="slider{{ i }}" class="dynamic-slider noUi-target"></div>
           </div>
         </td>
-        <td class="tg-3xi5" id="group-account-change-row-{{ i }}">0</td>
-        <td class="tg-3xi5" id="remaining-tokens-row-{{ i }}">10</td>
-        <td class="tg-3xi5" id="remaining-ecu-row-{{ i }}">10</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -79,24 +79,25 @@
 <script src="{% static 'global/nouislider.min.js' %}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    // Randomize the order of the remember list items
+    const rememberList = document.getElementById("remember-list");
+    const items = rememberList.querySelectorAll("li");
+    const itemsArray = Array.from(items);
+    itemsArray.sort(() => Math.random() - 0.5);
+    rememberList.innerHTML = "";
+    itemsArray.forEach(item => rememberList.appendChild(item));
+
     const treatment = "{{ treatment }}";
     const step = treatment === "PM" ? 3 : 4;
+    const p = {{ p }};
 
     for (let i = 0; i < 11; i++) {
-        let j, k, j_ecu, k_ecu;
-        if (i === 0) {
-            j = 0;
-            j_ecu = 0;
-            document.getElementById(`token-info-${i}`).innerText = `${j} tokens`;
-            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
-        } else {
-            j = (i - 1) * step + 1;
-            k = i * step;
-            j_ecu = j * 3 / 4;
-            k_ecu = k * 3 / 4;
-            document.getElementById(`token-info-${i}`).innerText = `${j} to ${k} tokens`;
-            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
+        let j = i * step;
+        if (treatment === 'PM') {
+            j += p;
         }
+        document.getElementById(`random-number-${i}`).innerText = `${i}`;
+        document.getElementById(`token-info-${i}`).innerText = `${j} Tokens`;
 
         let slider = document.getElementById(`slider${i}`);
         let sliderPercentage = ((10 + i) / 20) * 100;
@@ -125,13 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
         slider.noUiSlider.on("update", function (values, handle) {
             let sliderValue = parseInt(values[handle]);
             let remainingTokens = initialTokens - sliderValue + " Tokens";
-            let remainingECU = initialTokens - sliderValue + " ECU";
-            let changeToGroupAccount = sliderValue * 3 + " ECU"; // The change to the group account is three times the slider value
-
-            // Update table values for this row
-            document.getElementById(`remaining-tokens-row-${i}`).innerText = remainingTokens;
-            document.getElementById(`remaining-ecu-row-${i}`).innerText = remainingECU;
-            document.getElementById(`group-account-change-row-${i}`).innerText = changeToGroupAccount;
 
             // Update the hidden input field with the slider value
             document.getElementById(`player_m${i}`).value = sliderValue;
@@ -148,20 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 activePips[i].classList.add('active-pip');
             }
 
-            // Update the resulting group account value
-            if (i === 0) {
-            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
-        } else {
-            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
-        }
         });
-
-        // Initialize the resulting group account value
-            if (i === 0) {
-            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} ECU`;
-        } else {
-            document.getElementById(`ecu-info-${i}`).innerText = `${j_ecu} to ${k_ecu} ECU`;
-        }
     }
 });
 </script>
