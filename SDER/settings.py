@@ -4,20 +4,20 @@ SESSION_CONFIGS = [
     dict(
         name='SDER_M',
         display_name='SDER - Treatment M',
-        app_sequence=['instructions', 'social_dilemma_game'],
+        app_sequence=['instructions', 'practice_game', 'social_dilemma_game'],
         treatments='M'
 
     ),
     dict(
         name='SDER_P',
         display_name='SDER - Treatment P',
-        app_sequence=['instructions', 'social_dilemma_game'],
+        app_sequence=['instructions', 'practice_game', 'social_dilemma_game'],
         treatments='P',
     ),
     dict(
         name='SDER_PM',
         display_name='SDER - Treatment PM',
-        app_sequence=['instructions', 'social_dilemma_game'],
+        app_sequence=['instructions', 'practice_game', 'social_dilemma_game'],
         treatments=['PM'],
     ),
 ]
@@ -28,7 +28,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    num_demo_participants=4,
+    num_demo_participants=12,
     participation_payment=10,
     exchange_rate=1,
 
@@ -39,9 +39,11 @@ SESSION_CONFIG_DEFAULTS = dict(
 
 PARTICIPANT_FIELDS = [
     'treatment',
-
+    'p_ex',
+    'p_ex_id',
+    'wait_page_arrival'
 ]
-SESSION_FIELDS = []
+SESSION_FIELDS = ['exogenous_decisions']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans

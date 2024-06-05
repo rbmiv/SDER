@@ -32,10 +32,10 @@
         {% endif %}
 
         {% if treatment == 'M' %}
-        <th class="decision-2-header">Random Number Drawn</th>
+        <th class="decision-2-header">Average Random Number Drawn <br> by Other Group Members</th>
         {% endif %}
 
-        <th class="decision-2-header">Group Account <br>Starting Balance</th>
+        <th class="decision-2-header">Total Group Account <br>Starting Balance</th>
         <th >
           <span class="decision-2-header">Your Decision{% if treatment == 'PM' %} 2{% endif %}:</span>
           <br>
@@ -88,19 +88,17 @@ document.addEventListener("DOMContentLoaded", function () {
     itemsArray.forEach(item => rememberList.appendChild(item));
 
     const treatment = "{{ treatment }}";
-    const step = treatment === "PM" ? 3 : 4;
+    const step = 3;
     const p = {{ p }};
+    const p_ex = {{p_ex}};
 
     for (let i = 0; i < 11; i++) {
-        let j = i * step;
-        if (treatment === 'PM') {
-            j += p;
-        }
+        let j = p_ex + p + i * step;
         document.getElementById(`random-number-${i}`).innerText = `${i}`;
         document.getElementById(`token-info-${i}`).innerText = `${j} Tokens`;
 
         let slider = document.getElementById(`slider${i}`);
-        let sliderPercentage = ((10 + i) / 20) * 100;
+        let sliderPercentage = ((10 + Math.floor((p_ex + i*step)/4)) / 20) * 100;
         slider.style.width = `${sliderPercentage}%`;
 
         let initialTokens = 10; // Assuming 10 initial tokens in the individual account
@@ -114,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 density: 25
             },
             range: {
-                min: -i, // Minimum is negative of the average tokens for that row
+                min: -Math.floor((p_ex + i*step)/4), // Minimum is negative of the average tokens for that row
                 max: 10
             },
             step: 1

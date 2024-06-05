@@ -1,48 +1,60 @@
+{{block styles}}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{endblock}}
+
 {{ block title }}
+<div class="narrow-body">
     Results
+</div>
 {{ endblock }}
 
 {{ block content }}
-
+<div class="narrow-body">
     {{if treatment == 'P'}}
+    <div class="results-header">Decisions</div>
         <b>Your Decision:</b> {{player.p}} Tokens
         <br>
-        <b>Average Decision of Others in Your Group:</b> {{p_others}} Tokens
+        <b>Average of Others:</b> {{p_others}} Tokens
     {{endif}}
 
-    {{if treatment == 'PM'}}
+    {{if treatment == 'PM'}}>
+    <div class="results-header">Decision 1</div>
         <b>Your Decision 1:</b> {{player.p}} Tokens
         <br>
-        <b>Average Decision 1 of Others in Your Group:</b> {{p_others}} Tokens
+        <b>Average Decision 1 of Others:</b> {{p_others}} Tokens
         <br>
     {{endif}}
-
 
     {{if treatment == 'M'}}
-        <b>Random Number of Tokens Drawn:</b> {{random_draw}} Tokens
+    <div class="results-header">Random Draws:</div>
+        <b>Total Tokens Drawn:</b> {{p_total}} Tokens
         <br>
-        <b>Your Decision Based on Random Number:</b> {{player.m_final}} Tokens
+        <br>
+     <div class="results-header">Decisions:</div>
+        <b>Your Binding Decision:</b> {{player.m_final}} Tokens
+        <br>
+        <b>Average Decision of Others:</b> {{m_others}} Tokens
     {{endif}}
 
-    {{if treatment == 'PM'}}
+    {{if treatment == 'PM'}}>
+    <div class="results-header">Decision 2</div>
         <b>Your Decision 2:</b> {{player.m_final}} Tokens
         <br>
         <b>Average Decision 2 of Others in Your Group:</b> {{m_others}} Tokens
     {{endif}}
 
-<br>
-    <b>Tokens Left in Your Personal Account:</b> {{personal_account}} Tokens
-<br>
-    <b>Payoff from Your Personal Account:</b> {{personal_account}} ECU
-<br>
-    <b>Number of Tokens Left in the Group Account:</b> {{group_account}} Tokens
-<br>
-    <b>Payoff Per Person from Group Account:</b> {{group_payoff}} ECU
-<br>
-    <b>Your Total Payoff:</b> {{payoff}} ECU
-
 <br><br>
+<div class="results-header">Earnings</div>
+{{if treatment == 'M'}}<div><b>Your Random Draw:</b> {{p_ex_payoff}} ECU</div>{{endif}}
+    <b>Individual Account:</b> {{personal_account}} ECU (from {{personal_account}} Tokens)
+<br>
+    <b>Group Account:</b> {{group_payoff}} ECU (from {{group_account}} Tokens)
+<br><br>
+    <div style="font-size:16pt;"><b>Your Total Payoff:</b> {{total_payoff}} ECUs</div>
+
+<br>
     {{ next_button }}
+</div>
 {{ endblock }}
 
 

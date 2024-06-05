@@ -1,0 +1,27 @@
+{{block styles}}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{endblock}}
+
+{{ block title }}
+
+<div class="narrow-body">
+    Real Decision Rounds
+
+</div>
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+    <p class="notice-text">
+        The following Decision{{if treatment == 'PM'}}s{{endif}} count{{if treatment != 'PM'}}s{{endif}}
+        towards your final payoff.
+    </p>
+
+    <p class="notice-text">
+        There will be only one round, so think carefully about your choices.
+    </p>
+
+    <br>
+    {{ next_button }}
+</div>
+{{ endblock }}

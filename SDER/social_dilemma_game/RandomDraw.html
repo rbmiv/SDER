@@ -1,0 +1,24 @@
+{{block styles}}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{endblock}}
+
+{{ block title }}
+<div class="narrow-body">
+    Your Random Draw
+</div>
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+
+    <p class="notice-text">Your randomly-drawn number is {{p_ex}}. </p>
+
+    <p class="notice-text">
+        This means that {{p_ex}} Tokens will be added to the starting Group Account Balance, and, in addition to
+        your payoff from the Individual and Group Accounts, you will receive {{p_ex_payoff}} ECUs.
+    </p>
+
+    <br>
+    {{ next_button }}
+</div>
+{{ endblock }}

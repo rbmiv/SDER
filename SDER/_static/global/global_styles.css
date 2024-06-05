@@ -24,10 +24,8 @@ body {
   text-align: right;
     margin:auto;
   width: 75%;
-  position: relative;
-  top: -10px;
   height: 30px;
-    padding:40px 20px 40px 20px;
+    padding:5px 20px 42px 20px;
 }
 
 .slider-container-2 {
@@ -49,7 +47,13 @@ body {
     margin-bottom:10px;
 }
 
+.instructions-subheading{
+    color: #0d6dfb;
+    font-weight:bold;
+}
+
 ul{
+    margin-left:15px;
     padding-left:25px;
     padding-bottom:0;
     margin-bottom:5px;
@@ -180,10 +184,12 @@ ul{
 
 .decision-1-subsection{
     text-align:center;
-    font-size:16pt;
-    margin-bottom:5px;
+    font-size:14pt;
+    margin-bottom:-4px;
+    margin-top:30px;
     font-weight:bold;
 }
+
 
 .row-light {
     background-color: lightgray;
@@ -206,7 +212,7 @@ ul{
 }
 
 .decision-header {
-    font-size: 14pt;
+    font-size: 16pt;
     font-weight: bold;
     text-decoration:underline;
     padding-top:8px;
@@ -220,7 +226,8 @@ ul{
 
 .otree-title.page-header{
     color: #0d6dfb;
-    padding:0;
+    padding: 20px 10px 10px;
+    text-align:center;
 }
 
 .decision-2-header{
@@ -253,4 +260,34 @@ ul{
     font-size:18pt !important;
     font-weight:bold;
     background-color: lightgray;
+}
+
+.radio-select-option {
+    margin-left: 30px; /* Adjust the value as needed for the indent */
+}
+
+.form-group{
+    margin-bottom:10px;
+}
+
+.error-message {
+           color: #832029;
+            text-align:center;
+           margin-top: 5px;
+           padding: 5px;
+           border: 1px solid #f3c0c5;
+           background-color: #f6d5d8;
+           border-radius: 5px;
+            width:500px;
+}
+
+.results-header{
+    font-weight:bold;
+    font-size:16pt;
+    color: #0d6dfb;
+}
+
+.notice-text{
+    font-size:14pt;
+    font-weight:500;
 }

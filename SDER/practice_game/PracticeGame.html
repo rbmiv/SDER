@@ -1,0 +1,265 @@
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/nouislider.css' }}"/>
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{ endblock }}
+
+{{ block title }}
+<div class="narrow-body">
+    Practice Game
+</div>
+{{ endblock }}
+
+{{ block content }}
+
+<body>
+<div class="narrow-body">
+    <div class="instructions">
+      <p>
+        Use the sliders below to select practice Decisions for yourself and your other group members. After making your
+        decisions, hit Next to see your practice Results. You may repeat this practice up to 5 times.
+      </p>
+        <b>Remember:</b>
+        <ul id="remember-list">
+          <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+          <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+        </ul>
+    </div>
+
+    <div class="decision-1-subsection" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
+        Your Decision{% if treatment == 'PM' %} 1{% endif %}
+    </div>
+    <div class="slider-container-1" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
+        <div class="slider" id="slider1"></div>
+    </div>
+
+    <div class="decision-1-subsection" {% if treatment != 'M' %} style="display: none" {% endif %}>Your Randomly-Drawn Number</div>
+    <div class="slider-container-1" {% if treatment != 'M' %} style="display: none" {% endif %}>
+        <div class="slider" id="slider3"></div>
+    </div>
+
+    <div class="decision-1-subsection" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
+        Average Decision{% if treatment == 'PM' %} 1{% endif %} of Others in Your Group
+    </div>
+    <div class="decision-1-subsection" {% if treatment not in ['M'] %} style="display: none" {% endif %}>
+        Average Random Number Drawn by Others
+    </div>
+    <div class="slider-container-1">
+        <div class="slider" id="slider2"></div>
+    </div>
+
+    <div class="decision-1-subsection" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+        Average Decision{% if treatment == 'PM' %} 2{% endif %} of Others
+    </div>
+    <div class="slider-container-1" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+        <div class="slider" id="slider5"></div>
+    </div>
+
+        <div class="decision-1-subsection" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+            Your Decision{% if treatment == 'PM' %} 2{% endif %}
+        </div>
+        <div class="slider-container-1" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+            <div class="slider" id="slider4"></div>
+        </div>
+
+
+    <br><br>
+
+<input type="hidden" id="player_p" name="p">
+<input type="hidden" id="player_p_others" name="p_others">
+<input type="hidden" id="player_p_ex" name="p_ex">
+<input type="hidden" id="player_m" name="m">
+<input type="hidden" id="player_m_others" name="m_others">
+    {{ next_button }}
+</div>
+</body>
+{{ endblock }}
+
+{{ block script }}
+    <script src="{% static 'global/nouislider.min.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rememberList = document.getElementById("remember-list");
+            const items = rememberList.querySelectorAll("li");
+            const itemsArray = Array.from(items);
+            const treatment = "{{ treatment }}"; // Define treatment variable
+
+            itemsArray.sort(() => Math.random() - 0.5);
+            rememberList.innerHTML = "";
+            itemsArray.forEach(item => rememberList.appendChild(item));
+
+            function updateSliderRange(slider, min, max) {
+                slider.noUiSlider.updateOptions({
+                    range: {
+                        'min': min,
+                        'max': max
+                    }
+                });
+            }
+
+            function updateAllRanges() {
+                let min; // Define min in the global scope
+
+                if (treatment === 'PM' || treatment === 'M') {
+                    const slider1 = document.getElementById("slider1");
+                    const slider2 = document.getElementById("slider2");
+                    const slider3 = document.getElementById("slider3");
+                    const slider4 = document.getElementById("slider4");
+                    const slider5 = document.getElementById("slider5");
+
+                    if (treatment === 'PM') {
+                        let p_val = parseInt(slider1.noUiSlider.get());
+                        let p_others_val = parseInt(slider2.noUiSlider.get());
+                        min = -(p_val + p_others_val * 3) / 4;
+                    }
+                    if (treatment === 'M') {
+                        let p_ex_val = parseInt(slider3.noUiSlider.get());
+                        let p_others_val = parseInt(slider2.noUiSlider.get());
+                        min = -(p_ex_val + p_others_val * 3) / 4;
+                    }
+                    min = Math.round(min); // Round the min value
+                    if (slider4) updateSliderRange(slider4, min, 10); // Check if slider4 is defined
+                    if (slider5) updateSliderRange(slider5, min, 10); // Check if slider5 is defined
+                }
+            }
+
+            // Initialize noUiSlider for slider1
+            let slider1 = document.getElementById("slider1");
+            noUiSlider.create(slider1, {
+                start: [0],
+                range: {
+                    'min': 0,
+                    'max': 10
+                },
+                pips: {
+                    mode: "steps",
+                    density: 25
+                },
+                step: 1
+            });
+
+            // Initialize noUiSlider for slider2
+            let slider2 = document.getElementById("slider2");
+            noUiSlider.create(slider2, {
+                start: [0],
+                range: {
+                    'min': 0,
+                    'max': 10
+                },
+                pips: {
+                    mode: "steps",
+                    density: 25
+                },
+                step: 1
+            });
+
+            // Initialize noUiSlider for slider3
+            let slider3 = document.getElementById("slider3");
+            noUiSlider.create(slider3, {
+                start: [0],
+                range: {
+                    'min': 0,
+                    'max': 10
+                },
+                pips: {
+                    mode: "steps",
+                    density: 25
+                },
+                step: 1
+            });
+
+            // Initialize noUiSlider for slider4
+            let slider4 = document.getElementById("slider4");
+            noUiSlider.create(slider4, {
+                start: [0],
+                range: {
+                    'min': 0,
+                    'max': 10
+                },
+                pips: {
+                    mode: "steps",
+                    density: 25
+                },
+                step: 1
+            });
+
+            // Initialize noUiSlider for slider5
+            let slider5 = document.getElementById("slider5");
+            noUiSlider.create(slider5, {
+                start: [0],
+                range: {
+                    'min': 0,
+                    'max': 10
+                },
+                pips: {
+                    mode: "steps",
+                    density: 25
+                },
+                step: 1
+            });
+
+            function updateValues() {
+                const p = parseFloat(slider1.noUiSlider.get());
+                const p_others = parseFloat(slider2.noUiSlider.get());
+                const p_ex = parseFloat(slider3.noUiSlider.get());
+                const m = parseFloat(slider4.noUiSlider.get());
+                const m_others = parseFloat(slider5.noUiSlider.get());
+
+                // Update the hidden input field with the value of slider1
+                document.getElementById('player_p').value = p;
+                document.getElementById('player_p_others').value = p_others;
+                document.getElementById('player_p_ex').value = p_ex;
+                document.getElementById('player_m').value = m;
+                document.getElementById('player_m_others').value = m_others;
+            }
+
+            // Attach the updateValues function to the 'update' event for all sliders
+            slider1.noUiSlider.on("update", function () {
+                updateValues();
+                updateAllRanges();
+            });
+
+            slider2.noUiSlider.on("update", function () {
+                updateValues();
+                updateAllRanges();
+            });
+
+            slider3.noUiSlider.on("update", function () {
+                updateValues();
+                updateAllRanges();
+            });
+
+            slider4.noUiSlider.on("update", function () {
+                updateValues();
+            });
+
+            slider5.noUiSlider.on("update", function () {
+                updateValues();
+            });
+
+            // Call updateValues initially to set the default values
+            updateValues();
+            updateAllRanges();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function highlightActivePip(slider) {
+                let pips = slider.querySelectorAll('.noUi-value');
+                pips.forEach(pip => pip.classList.remove('active-pip'));
+                let value = parseInt(slider.noUiSlider.get());
+                let activePip = slider.querySelector(`.noUi-value[data-value="${value}"]`);
+                if (activePip) {
+                    activePip.classList.add('active-pip');
+                }
+            }
+
+            let sliders = document.querySelectorAll('.slider');
+            sliders.forEach((slider, index) => {
+                slider.noUiSlider.on('update', function () {
+                    highlightActivePip(slider);
+                });
+                highlightActivePip(slider); // Initial call to set the active pip
+            });
+        });
+</script>
+
+{{ endblock }}

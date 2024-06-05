@@ -35,43 +35,7 @@
     </div>
 
 
-<br>
-    <div class="instructions">
-        Use the slider below to choose a hypothetical average Decision {% if treatment == 'PM' %} 1{% endif %} of
-        the other 3 members in your group. This selection will update the table to show how this would affect account
-        values and earnings. This selection is hypothetical and will not affect your true earnings.
-    </div>
 
-<div class="decision-1-subsection">Average Decision of Others (Hypothetical)</div>
-    <div class="slider-container-1">
-        <div class="slider" id="slider2"></div>
-    </div>
-
-
-<br>
-<div class="decision-1-subsection">Resulting Account Values</div>
-
-    <table class="tg">
-        <thead>
-            <tr>
-                <th>Account</th>
-                <th><span class="tokens-dark">Tokens</span></th>
-                <th>Earnings from Account in <span class="ecu-dark">ECU</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><b>Individual</b></td>
-                <td id="individualTokens">10</td>
-                <td id="individualECU"></td>
-            </tr>
-            <tr>
-                <td><b>Group</b></td>
-                <td id="groupTokens"></td>
-                <td id="groupECU"></td>
-            </tr>
-        </tbody>
-    </table>
 
     <!-- Hidden input field for player.p -->
     <input type="hidden" name="p" id="player_p" value="0">
@@ -92,7 +56,7 @@
         itemsArray.sort(() => Math.random() - 0.5);
         rememberList.innerHTML = "";
         itemsArray.forEach(item => rememberList.appendChild(item));
-        let initialTokens = 10; // Assuming 10 initial tokens in the individual account
+        let initialTokens = 10;
 
         // Initialize noUiSlider for slider1
         let slider1 = document.getElementById("slider1");
@@ -109,47 +73,16 @@
             step: 1
         });
 
-        // Initialize noUiSlider for slider2
-        let slider2 = document.getElementById("slider2");
-        noUiSlider.create(slider2, {
-            start: [0],
-            range: {
-                'min': 0,
-                'max': 10
-            },
-            pips: {
-                mode: "steps",
-                density: 25
-            },
-            step: 1
-        });
 
         function updateValues() {
             const myDecision1 = parseFloat(slider1.noUiSlider.get());
-            const averageDecision1 = parseFloat(slider2.noUiSlider.get());
 
             // Update the hidden input field with the value of slider1
             document.getElementById('player_p').value = myDecision1;
-
-            // Calculations
-            const individualTokens = initialTokens - myDecision1;
-            const groupTokens = (averageDecision1 * 3) + myDecision1;
-            const individualECU = individualTokens * 1; // Assuming ECU value is double the token value
-            const groupECU = groupTokens * 3; // Assuming ECU value is double the token value
-
-            // Updating Table Values
-            document.getElementById('individualTokens').textContent = individualTokens + " Tokens";
-            document.getElementById('individualECU').textContent = "" + individualECU + " ECU to you";
-            document.getElementById('groupTokens').textContent = groupTokens + " Tokens";
-            document.getElementById('groupECU').textContent =groupECU/4 + " ECU to each group member";
         }
 
         // Attach the updateValues function to the 'update' event for both sliders
         slider1.noUiSlider.on("update", function () {
-            updateValues();
-        });
-
-        slider2.noUiSlider.on("update", function () {
             updateValues();
         });
 

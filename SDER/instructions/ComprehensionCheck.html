@@ -1,0 +1,78 @@
+{% load static %}
+
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{% static 'global/global_styles.css' %}"/>
+{{ endblock }}
+
+{{ block title }}
+    <div class="narrow-body">
+        Check Your Understanding
+    </div>
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+
+        <div class="form-group">
+            1. How much is one <b>Experimental Currency Unit (ECU)</b> worth in <b>US Dollars</b>?
+            <div class="radio-select-option">
+                {{ form.value_ecu }}
+                {% if form.value_ecu.errors %}
+                    {% for error in form.value_ecu.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            2. How much is one token in <b>your Individual Account</b> worth to <b>you</b>?
+            <div class="radio-select-option">
+                {{ form.value_individual_self }}
+                {% if form.value_individual_self.errors %}
+                    {% for error in form.value_individual_self.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            3. How much is one token in <b>your Individual Account</b> worth to <b>your other group members</b>?
+            <div class="radio-select-option">
+                {{ form.value_individual_others }}
+                {% if form.value_individual_others.errors %}
+                    {% for error in form.value_individual_others.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            4. How much is one token in the <b>Group Account</b> worth to <b>you</b>?
+            <div class="radio-select-option">
+                {{ form.value_group_self }}
+                {% if form.value_group_self.errors %}
+                    {% for error in form.value_group_self.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            5. How much is one token in the <b>Group Account</b> worth to <b>each individual group member</b>?
+            <div class="radio-select-option">
+                {{ form.value_group_others }}
+                {% if form.value_group_others.errors %}
+                    {% for error in form.value_group_others.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        {{ next_button }}
+</div>
+{{ endblock }}

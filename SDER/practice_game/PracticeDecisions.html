@@ -1,0 +1,21 @@
+{{block styles}}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{endblock}}
+
+{{ block title }}
+<div class="narrow-body">
+    Practice Rounds
+</div>
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+    <p>
+        The next few pages allow you to practice your Decisions and choose hypothetical Decisions for your other
+        group members.
+    </p>
+    <p>The Practice Results will display your earnings if everyone were to choose the amounts you select.</p>
+    <p>You may repeat this practice up to 5 times.</p>
+    {{ next_button }}
+</div>
+{{ endblock }}

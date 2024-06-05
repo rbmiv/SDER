@@ -1,0 +1,29 @@
+{{block styles}}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{endblock}}
+
+{{ block title }}
+    Repeat Practice?
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+
+    <div class="form-group">
+        {{form.repeat.label}}
+            <div class="radio-select-option">
+                {{ form.repeat }}
+                {% if form.repeat.errors %}
+                    {% for error in form.repeat.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+<br>
+    {{ next_button }}
+</div>
+{{ endblock }}
+
+
