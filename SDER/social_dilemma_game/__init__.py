@@ -235,7 +235,7 @@ class Results(Page):
             personal_account = 10 - player.get_m_value(group.p_total)
 
         group_account = group.final_group_account
-        p_others = round((group.p_total - player.p) / 3)
+        p_others = round((group.p_total - player.p) / 3, 1)
         m_others = round((group.m_total - player.m_final) / 3, 1)
         group_payoff = group.final_group_account * C.MPCR
         p_ex_payoff = 10-player.p_ex
