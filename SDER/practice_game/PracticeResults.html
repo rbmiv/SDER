@@ -28,15 +28,15 @@
 
 {{if treatment == 'P'}}
 <div><b>Your Decision:</b> {{p}} Tokens</div>
-<div><b>Average Decision 1 of your other group members:</b> {{p_others}} Tokens</div>
+<div><b>Average Decision 1 of Others:</b> {{p_others}} Tokens</div>
 <br>
 {{endif}}
 
 {{if treatment == 'PM'}}
 <div><b>Your Decision 1:</b> {{p}} Tokens</div>
-<div><b>Average Decision 1 of your other group members:</b> {{p_others}} Tokens</div>
+<div><b>Average Decision 1 of Others:</b> {{p_others}} Tokens</div>
 <div><b>Your Decision 2:</b> {{m}} Tokens</div>
-<div><b>Average Decision 2 of your other group members:</b> {{m_others}} Tokens</div>
+<div><b>Average Decision 2 of Others:</b> {{m_others}} Tokens</div>
 <br>
 {{endif}}
 
@@ -45,7 +45,7 @@
     <div><b>Individual Account:</b> {{personal_account}} ECUs (from {{personal_account}} Tokens)</div>
     <div><b>Group Account:</b> {{group_payoff}} ECUs (from {{group_account}} Tokens)</div>
         <br>
-    <div style="font-size:16pt;"><b>Your total practice payoff:</b> {{total_payoff}} ECUs</div>
+    <div style="font-size:16pt;"><b>Your Total Practice Payoff:</b> {{total_payoff}} ECUs</div>
 <br>
 
     {{ next_button }}
