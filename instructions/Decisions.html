@@ -1,0 +1,198 @@
+{{ block style }}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{ endblock }}
+
+{{ block title }}
+<div class="narrow-body">
+Your Decision{{ if treatment == 'PM' }}s{{ endif }}
+</div>
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+{{ if treatment == 'M' }}
+
+<div class="instructions-subheading">Starting Balances</div>
+<p>
+    In this experiment, each participant has an Individual Account, and each group of 4 has a Group Account.
+    The experiment begins with <span class="tokens">10 tokens</span> in each participant's Individual Account
+    and <span class="tokens">0 tokens</span> in the Group Account.
+
+    <ul id="remember-list">
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+    </ul>
+</p>
+
+<div class="instructions-subheading">Bonus Earnings</div>
+<p>
+
+    Before your decision, you will also be assigned a <b>random number</b> between 0 and 10</b>,
+    with each number having an equal chance of being drawn.
+    This number of tokens will be added to the Group Account.
+    The remaining tokens out of 10 will be paid to you as part of your final earnings.
+    This process happens for each group member, but you will only know your own number.
+</p>
+
+<div class="instructions-subheading">Binding Decisions</div>
+<p>
+    Because you only know your random number, and not for the other members of your group, you
+    will not know the starting balance of the Group Account before you make your decision. So, we ask you to submit
+    binding decisions for the possible starting balances of the Group Account.
+</p>
+
+<div class="instructions-subheading">Decision Task</div>
+<p >
+    Each person will privately decide to either:
+    <ul id="decision-task-list">
+        <li>move up to <b>10 tokens from their Individual Account</b> to the Group Account </li>
+        <li>move up to <b>1/4 of the tokens from the Group Account</b> to their Individual Account</li>
+    </ul>
+</p>
+
+<div class="instructions-subheading">Earnings</div>
+<p>
+    Your earnings from the task will be the sum of:
+        <ul>
+            <li>The value remaining in your Individual Account after your Decision</li>
+            <li>Your Bonus Earnings from the Random Draw</li>
+            <li>1/4 of the final value of the Group Account</li>
+        </ul>
+</p>
+
+{{ endif }}
+
+{{ if treatment == 'P' }}
+<div class="instructions-subheading">Starting Balances</div>
+<p>
+    In this experiment, each participant has an Individual Account, and each group of 4 has a Group Account.
+    The experiment begins with <span class="tokens">10 tokens</span> in each participant's Individual Account and
+    <span class="tokens">0 tokens</span> tokens in the Group Account.
+    <ul id="remember-list">
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+    </ul>
+</p>
+
+<div class="instructions-subheading">Decision Task</div>
+<p>
+    Each person will privately decide to <b>move between 0 and 10 tokens from their
+    Individual Account</b> to the Group Account. Each decision must be in whole tokens.
+</p>
+
+<div class="instructions-subheading">Earnings</div>
+<p>
+    Your earnings from the task will be the sum of:
+        <ul>
+            <li>The value remaining in your Individual Account after your Decision</li>
+            <li>1/4 of the final value of the Group Account</li>
+        </ul>
+</p>
+{{ endif }}
+
+{{ if treatment == 'PM' }}
+<div class="decision-header">Decision 1</div>
+
+<div class="instructions-subheading">Starting Balances</div>
+<p>
+    In this experiment, each participant has an Individual Account, and each group of 4 has a Group Account.
+    The experiment begins with <span class="tokens">10 tokens</span> in each participant's Individual Account
+    and <span class="tokens">0 tokens</span> in the Group Account.
+    <ul id="remember-list">
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+    </ul>
+</p>
+
+<div class="instructions-subheading">Decision Task</div>
+<p>
+Each person will privately decide to <b>move between 0 and 10 tokens from their
+    Individual Account</b> to the Group Account. Each decision must be in whole tokens.
+</p>
+<div class="instructions-subheading">Earnings</div>
+<p>
+    Any tokens left in your Individual Account after Decision 1 will be count towards your final earnings. Tokens
+    left in the Individual Account after Decision 1 cannot be used for Decision 2.
+</p>
+
+<div class="decision-header">Decision 2</div>
+<div class="instructions-subheading">Starting Balances</div>
+<p>
+    In Decision 2, each individual begins with <span class="tokens">10 tokens</span> in their Individual Account.
+    Each four-person group begins Decision 2 with the Group Account value determined by the sum of each
+    member's Decision 1.
+    <ul id="remember-list-2">
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+      <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+    </ul>
+</p>
+
+<div class="instructions-subheading">Decision Task</div>
+<p>
+    Each person will privately decide to either:
+    <ul id="decision-task-list">
+        <li>move up to <b>10 tokens from their Individual Account</b> to the Group Account </li>
+        <li>move up to <b>1/4 of the tokens from the Group Account</b> to their Individual Account</li>
+    </ul>
+</p>
+
+<div class="instructions-subheading">Binding Decisions</div>
+<p>
+    You will not know the total amount of tokens in the Group Account from Decision 1 until you finish
+    Decision 2. Therefore, for each possible <i>average</i> Decision 1 of your other group members, we ask you to
+    make a decision. The final choice that counts for earnings will depend on the true average Decision 1 of your other
+    group members.
+</p>
+
+
+
+<div class="instructions-subheading">Earnings</div>
+<p>
+    Your earnings from the task will be the sum of:
+        <ul>
+            <li>The value remaining in your Individual Account after Decision 1</li>
+            <li>The value remaining in your Individual Account after Decision 2</li>
+            <li>1/4 of the final value of the Group Account</li>
+        </ul>
+</p>
+
+{{ endif }}
+
+<div class="next-button">{{ next_button }}</div>
+</div>
+{{ endblock }}
+
+{{ block script }}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Randomize the first remember list
+    const rememberList = document.getElementById("remember-list");
+    const items = rememberList.querySelectorAll("li");
+    const itemsArray = Array.from(items);
+    itemsArray.sort(() => Math.random() - 0.5);
+    rememberList.innerHTML = "";
+    itemsArray.forEach(item => rememberList.appendChild(item));
+
+    // Check for treatment PM and randomize the second remember list
+    const treatment = "{{ treatment }}";
+    if (treatment === 'PM') {
+        const rememberList2 = document.getElementById("remember-list-2");
+        const items2 = rememberList2.querySelectorAll("li");
+        const itemsArray2 = Array.from(items2);
+        itemsArray2.sort(() => Math.random() - 0.5);
+        rememberList2.innerHTML = "";
+        itemsArray2.forEach(item => rememberList2.appendChild(item));
+    }
+
+
+    if (treatment !== 'P'){
+        const decisionTaskList = document.getElementById("decision-task-list");
+        const decisionItems = decisionTaskList.querySelectorAll("li");
+        const decisionItemsArray = Array.from(decisionItems);
+        decisionItemsArray.sort(() => Math.random() - 0.5);
+        decisionTaskList.innerHTML = "";
+        decisionItemsArray.forEach(item => decisionTaskList.appendChild(item));
+    }
+});
+</script>
+{{ endblock }}

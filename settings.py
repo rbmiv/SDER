@@ -29,11 +29,10 @@ SESSION_CONFIGS = [
 
 SESSION_CONFIG_DEFAULTS = dict(
     num_demo_participants=12,
-    participation_payment=10,
-    exchange_rate=1,
-
+    exchange_rate=.25,
+    survey=3,
     real_world_currency_per_point=1.00,
-    participation_fee=0.00,
+    participation_fee=5.00,
     doc=""
 )
 
@@ -41,7 +40,25 @@ PARTICIPANT_FIELDS = [
     'treatment',
     'p_ex',
     'p_ex_id',
-    'wait_page_arrival'
+    'wait_page_arrival',
+    'start_time',
+    'end_time',
+    'total_time',
+    'total_payoff',
+    'time_comprehension',
+    'time_consent',
+    'time_decisions',
+    'time_examples',
+    'time_welcome',
+    'time_practice',
+    'time_decision_m',
+    'time_decision_p',
+    'time_random_draw',
+    'time_real_decisions',
+    'time_results',
+    'time_instructions',
+    'time_survey'
+
 ]
 SESSION_FIELDS = ['exogenous_decisions']
 

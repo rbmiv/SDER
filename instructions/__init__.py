@@ -1,4 +1,6 @@
 from otree.api import *
+import time
+import pagetime
 
 doc = """
 This app creates assigns treatment condition and then displays the proper set of instructions.
@@ -10,6 +12,7 @@ def creating_session(subsession):
     treatments = itertools.cycle(subsession.session.config['treatments'])
     for player in subsession.get_players():
         player.participant.treatment = next(treatments)
+        player.participant.start_time = time.time()
 
 
 class C(BaseConstants):
@@ -28,35 +31,55 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     value_ecu = models.IntegerField(
-        choices=[[1, '$0.50'], [2, '$1.00'], [3, '$2.00'], [4, '$3.00']],
+        choices=[[1, '$0.50'], [2, '$0.25'], [3, '$2.00'], [4, '$3.00']],
         widget=widgets.RadioSelect,
         initial=0
     )
     value_individual_self = models.IntegerField(
-        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECUs'], [4, '2 ECUs'], ],
+        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECU'], [4, '2 ECUs'], ],
         widget=widgets.RadioSelect,
         initial=0
     )
     value_individual_others = models.IntegerField(
-        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECUs'], [4, '2 ECUs'], ],
+        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECU'], [4, '2 ECUs'], ],
         widget=widgets.RadioSelect,
         initial=0
     )
     value_group_self = models.IntegerField(
-        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECUs'], [4, '2 ECUs'], ],
+        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECU'], [4, '3 ECUs'], ],
         widget=widgets.RadioSelect,
         initial=0
     )
     value_group_others = models.IntegerField(
-        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECUs'], [4, '2 ECUs'], ],
+        choices=[[1, '0 ECU'], [2, '0.75 ECUs'], [3, '1 ECU'], [4, '2 ECUs'], ],
         widget=widgets.RadioSelect,
         initial=0
     )
-
+    random_draw_individual = models.IntegerField(
+        choices=[[1, '0'], [2, '10'], [3, '4'], [4, '6'], ],
+        widget=widgets.RadioSelect,
+        initial=0
+    )
+    random_draw_group = models.IntegerField(
+        choices=[[1, '0'], [2, '10'], [3, '3'], [4, '7'], ],
+        widget=widgets.RadioSelect,
+        initial=0
+    )
+    time_consent = models.IntegerField()
+    time_comprehension = models.IntegerField()
+    time_decisions = models.IntegerField()
+    time_examples = models.IntegerField()
+    time_welcome = models.IntegerField()
 
 # PAGES
 
+@pagetime.track
+class Consent(Page):
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_consent = pagetime.last(player.participant)
 
+@pagetime.track
 class Welcome(Page):
 
     @staticmethod
@@ -65,7 +88,11 @@ class Welcome(Page):
         exchange_rate = player.subsession.session.config['exchange_rate']
         return dict(treatment=treatment, exchange_rate=exchange_rate)
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_welcome = pagetime.last(player.participant)
 
+@pagetime.track
 class Decisions(Page):
 
     @staticmethod
@@ -74,7 +101,12 @@ class Decisions(Page):
         exchange_rate = player.subsession.session.config['exchange_rate']
         return dict(treatment=treatment, exchange_rate=exchange_rate)
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_decisions = pagetime.last(player.participant)
 
+
+@pagetime.track
 class Examples(Page):
 
     @staticmethod
@@ -83,15 +115,27 @@ class Examples(Page):
         exchange_rate = player.subsession.session.config['exchange_rate']
         return dict(treatment=treatment, exchange_rate=exchange_rate)
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_examples = pagetime.last(player.participant)
 
+@pagetime.track
 class ComprehensionCheck(Page):
     form_model = 'player'
-    form_fields = ['value_ecu',
-                   'value_individual_self',
-                   'value_individual_others',
-                   'value_group_self',
-                   'value_group_others'
-                   ]
+
+    @staticmethod
+    def get_form_fields(player):
+        treatment = player.participant.treatment
+        form_fields = ['value_ecu',
+                       'value_individual_self',
+                       'value_individual_others',
+                       'value_group_self',
+                       'value_group_others',
+                       ]
+        if treatment == 'M':
+            form_fields += ['random_draw_group', 'random_draw_individual']
+        return form_fields
+
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -106,7 +150,9 @@ class ComprehensionCheck(Page):
             value_individual_self=3,
             value_individual_others=1,
             value_group_self=2,
-            value_group_others=2
+            value_group_others=2,
+            random_draw_group=3,
+            random_draw_individual=3
         )
 
         error_messages = {}
@@ -117,13 +163,20 @@ class ComprehensionCheck(Page):
 
         return error_messages
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_comprehension = pagetime.last(player.participant)
+
 
 class ResultsWaitPage(WaitPage):
     pass
 
-
+@pagetime.track
 class Results(Page):
-    pass
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.time_results = int(time.time())
 
 
-page_sequence = [Welcome, Decisions, Examples, ComprehensionCheck]
+page_sequence = [Consent, Welcome, Decisions, Examples, ComprehensionCheck]

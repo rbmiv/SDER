@@ -1,5 +1,6 @@
 from otree.api import *
 import csv
+import pagetime
 
 doc = """
 This is the game app for all treatments. Different pages are displayed depending on treatment type, which is assigned 
@@ -103,6 +104,12 @@ class Player(BasePlayer):
         else:
             return self.m10
 
+    # time variables
+    time_decision_m = models.IntegerField()
+    time_decision_p = models.IntegerField()
+    time_random_draw = models.IntegerField()
+    time_real_decisions = models.IntegerField()
+    time_results = models.IntegerField()
 
 # PAGES
 
@@ -117,6 +124,7 @@ class GroupingWaitPage(WaitPage):
         print(f'Formed Group: {group.id_in_subsession} with players {[p.id_in_subsession for p in group.get_players()]}')
 
 
+@pagetime.track
 class RealDecisions(Page):
 
     @staticmethod
@@ -126,7 +134,9 @@ class RealDecisions(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        print("Group: ", player.group.id_in_subsession, "Player: ", player.id_in_group)
+        player.time_real_decisions = pagetime.last(player.participant)
+
+        # print("Group: ", player.group.id_in_subsession, "Player: ", player.id_in_group)
         treatment = player.participant.treatment
         if treatment == 'M':
             group_number = player.group.id_in_subsession
@@ -136,7 +146,7 @@ class RealDecisions(Page):
             exogenous_decisions = player.session.vars['exogenous_decisions']
 
             # Debugging: Print the current group and player IDs
-            print(f"Assigning p_ex for Group {group_number}, Player {player_id_in_group}")
+            # print(f"Assigning p_ex for Group {group_number}, Player {player_id_in_group}")
 
             # Find the corresponding row in the exogenous decisions data
             key = (group_number, player_id_in_group)
@@ -144,11 +154,12 @@ class RealDecisions(Page):
                 player.p_ex = exogenous_decisions[key]['p_ex']
                 player.p_ex_id = exogenous_decisions[key]['p_ex_id']
                 player.participant.vars['p_ex_id'] = exogenous_decisions[key]['p_ex_id']
-                print(f"Assigned p_ex: {player.p_ex} and p_ex_id: {player.participant.vars['p_ex_id']} to Player {player.id_in_group} in Group {group_number}")
+                #print(f"Assigned p_ex: {player.p_ex} and p_ex_id: {player.participant.vars['p_ex_id']} to Player {player.id_in_group} in Group {group_number}")
             else:
                 print(f"Error: No matching data found for Group {group_number}, Player {player_id_in_group}")
                 raise ValueError(f"No matching data found for Group {group_number}, Player {player_id_in_group}")
 
+@pagetime.track
 class DecisionP(Page):
     form_model = 'player'
     form_fields = ['p']
@@ -162,7 +173,12 @@ class DecisionP(Page):
         treatment = player.participant.treatment
         return dict(treatment=treatment)
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_decision_p = pagetime.last(player.participant)
 
+
+@pagetime.track
 class RandomDraw(Page):
     @staticmethod
     def is_displayed(player):
@@ -174,7 +190,11 @@ class RandomDraw(Page):
         p_ex_payoff = 10 - player.p_ex
         return dict(p_ex=p_ex,p_ex_payoff=p_ex_payoff)
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_random_draw = pagetime.last(player.participant)
 
+@pagetime.track
 class DecisionM(Page):
     form_model = 'player'
     form_fields = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm10']
@@ -189,6 +209,10 @@ class DecisionM(Page):
         p_ex = player.p_ex
         p = player.p
         return dict(treatment=treatment, p=p, p_ex=p_ex)
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_decision_m = pagetime.last(player.participant)
 
 
 class ResultsWaitPage(WaitPage):
@@ -220,7 +244,7 @@ class ResultsWaitPage(WaitPage):
 
         group.final_group_account = final_group_account  # Save the updated total back to group account
 
-
+@pagetime.track
 class Results(Page):
 
     @staticmethod
@@ -238,8 +262,12 @@ class Results(Page):
         p_others = round((group.p_total - player.p) / 3, 1)
         m_others = round((group.m_total - player.m_final) / 3, 1)
         group_payoff = group.final_group_account * C.MPCR
-        p_ex_payoff = 10-player.p_ex
+        if treatment == 'M':
+            p_ex_payoff = 10-player.p_ex
+        else:
+            p_ex_payoff = 0
         total_payoff = personal_account + group_payoff + p_ex_payoff
+        player.participant.total_payoff = total_payoff
         return dict(
             treatment=treatment,
             personal_account=personal_account,
@@ -252,8 +280,27 @@ class Results(Page):
             m_final=player.m_final,
             p_ex=player.p_ex,
             p_ex_payoff=p_ex_payoff
-
         )
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.time_results = pagetime.last(player.participant)
+
+
+class EndScreen(Page):
+
+
+    @staticmethod
+    def vars_for_template(player):
+        player.participant.finished = True
+
+        return dict(
+            total_payoff = player.participant.total_payoff,
+            participation_fee = player.session.config.participation_fee,
+            survey_payment = player.session.config.survey_payment
+        )
+
+
 
 
 page_sequence = [GroupingWaitPage, RealDecisions, DecisionP, RandomDraw, DecisionM, ResultsWaitPage, Results]

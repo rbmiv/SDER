@@ -19,7 +19,7 @@
 <body>
 <div class="narrow-body">
     <div class="instructions">
-      Use the slider below to select your Decision{% if treatment == 'PM' %} 1{% endif %}.
+      Use the slider below to select how many tokens to move your Individual Account to the Group Account.
       <br>
         <b>Remember:</b>
         <ul id="remember-list">
@@ -39,8 +39,10 @@
 
     <!-- Hidden input field for player.p -->
     <input type="hidden" name="p" id="player_p" value="0">
+
+
     <br>
-    {{ next_button }}
+    <div class="next-button">{{ next_button }}</div>
 </div>
 </body>
 

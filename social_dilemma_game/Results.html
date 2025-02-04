@@ -17,7 +17,7 @@
         <b>Average of Others:</b> {{p_others}} Tokens
     {{endif}}
 
-    {{if treatment == 'PM'}}>
+    {{if treatment == 'PM'}}
     <div class="results-header">Decision 1</div>
         <b>Your Decision 1:</b> {{player.p}} Tokens
         <br>
@@ -36,11 +36,11 @@
         <b>Average Decision of Others:</b> {{m_others}} Tokens
     {{endif}}
 
-    {{if treatment == 'PM'}}>
+    {{if treatment == 'PM'}}
     <div class="results-header">Decision 2</div>
         <b>Your Decision 2:</b> {{player.m_final}} Tokens
         <br>
-        <b>Average Decision 2 of Others in Your Group:</b> {{m_others}} Tokens
+        <b>Average Decision 2 of Others:</b> {{m_others}} Tokens
     {{endif}}
 
 <br><br>
@@ -53,8 +53,9 @@
     <div style="font-size:16pt;"><b>Your Total Payoff:</b> {{total_payoff}} ECUs</div>
 
 <br>
-    {{ next_button }}
+
+
+    <div class="next-button">{{ next_button }}</div>
 </div>
 {{ endblock }}
-
 

@@ -1,0 +1,217 @@
+{{ block style }}
+   <link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+    <style>
+        ul li{
+            line-height:1.2;
+        }
+    </style>
+{{ endblock }}
+
+{{ block title }}
+    <div class="narrow-body">
+        Example Decisions
+    </div>
+{{ endblock }}
+
+{{ block content }}
+<div class="narrow-body">
+
+<p>
+   The below examples show how each group member's Decision{{if treatment == 'PM'}}s{{endif}}
+    change{{if treatment != 'PM'}}s{{endif}} the value of each account.
+</p>
+
+{{ if treatment == 'M' }}
+
+    <ul>
+        <li><i>Example A:</i> If someone chooses -4 tokens for their Decision, this increases their Individual Account
+            value by +4 ECUs, and reduces the Group Account value by -12 ECUs.
+        <li><i>Example B:</i> If someone chooses 0 for their Decision 2, the Individual and Group Account
+            are not changed.</li>
+        <li><i>Example C:</i> If someone chooses +6 tokens for their Decision, this decreases their Individual Account
+        value by -6 ECUs, and increases the Group Account value by +18 ECUs.
+    </ul>
+
+    <table class="example-table">
+        <tr>
+            <th class="example-table-header" rowspan="2">Example</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision:
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
+        </tr>
+        <tr>
+            <th class="example-table-header">Individual Account</th>
+            <th class="example-table-header">Group Account</th>
+        </tr>
+        <tr>
+            <td class="row-light">A</td>
+            <td class="row-white" style="padding:0 5px;">-4 Tokens, moved <i>from</i> the Group Account</td>
+            <td class="row-white">+4</td>
+            <td class="row-white">-12</td>
+        </tr>
+        <tr>
+            <td class="row-light">B</td>
+            <td class="row-white">0 Tokens moved</td>
+            <td class="row-white">+0</td>
+            <td class="row-white">+0</td>
+        </tr>
+        <tr>
+            <td class="row-light">C</td>
+            <td class="row-white">+6 Tokens, moved <i>to</i> the Group Account</td>
+            <td class="row-white">-6</td>
+            <td class="row-white">+18</td>
+        </tr>
+    </table>
+    <br>
+
+
+{{ endif }}
+
+{{ if treatment == 'P' }}
+    <p>
+        <i>Example B</i>: if someone moves +2 tokens to the Group Account, this reduces their Individual Account value
+        by -2 ECUs, and increases the Group Account value by +6 ECUs.
+    </p>
+
+    <br>
+    <table class="example-table">
+        <tr>
+            <th class="example-table-header" rowspan="2">Example</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision:
+                <br>
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
+        </tr>
+        <tr>
+            <th class="example-table-header">Individual Account</th>
+            <th class="example-table-header">Group Account</th>
+        </tr>
+        <tr>
+            <td class="row-light">A</td>
+            <td class="row-white">0</td>
+            <td class="row-white">0</td>
+            <td class="row-white">0</td>
+        </tr>
+        <tr>
+            <td class="row-light">B</td>
+            <td class="row-white">+2</td>
+            <td class="row-white">-2</td>
+            <td class="row-white">+6</td>
+        </tr>
+        <tr>
+            <td class="row-light">C</td>
+            <td class="row-white">+8</td>
+            <td class="row-white">-8</td>
+            <td class="row-white">+24</td>
+        </tr>
+    </table>
+        <br>
+
+
+{{ endif }}
+
+{{ if treatment == 'PM' }}
+
+  <div class="decision-header"> Decision 1 </div>
+    <p>
+        <i>Example B</i>: if someone moves +2 tokens to the Group Account, this reduces their Individual Account value
+        by -2 ECUs, and increases the Group Account value by +6 ECUs.
+    </p>
+
+
+
+    <table class="example-table">
+        <tr>
+            <th class="example-table-header" rowspan="2">Example</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision 1:
+                <br>
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
+        </tr>
+        <tr>
+            <th class="example-table-header">Individual Account</th>
+            <th class="example-table-header">Group Account</th>
+        </tr>
+
+        <tr>
+            <td class="row-light">A</td>
+            <td class="row-white">0</td>
+            <td class="row-white">0</td>
+            <td class="row-white">0</td>
+        </tr>
+        <tr>
+            <td class="row-light">B</td>
+            <td class="row-white">+2</td>
+            <td class="row-white">-2</td>
+            <td class="row-white">+6</td>
+        </tr>
+        <tr>
+            <td class="row-light">C</td>
+            <td class="row-white">+8</td>
+            <td class="row-white">-8</td>
+            <td class="row-white">+24</td>
+        </tr>
+    </table>
+        <br>
+ <div class="decision-header"> Decision 2 </div>
+    <ul>
+        <li><i>Example D:</i> If someone chooses -4 tokens for their Decision 2, this increases their Individual Account
+            value by +4 ECUs, and reduces the Group Account value by -12 ECUs.
+        <li><i>Example E:</i> If someone chooses 0 for their Decision 2, the Individual and Group Account
+            are not changed.</li>
+        <li><i>Example F:</i> If someone chooses +6 tokens for their Decision 2, this decreases their Individual Account
+        value by -6 ECUs, and increases the Group Account value by +18 ECUs.
+    </ul>
+
+    <table class="example-table">
+        <tr>
+            <th class="example-table-header" rowspan="2">Example</th>
+            <th class="example-table-header" rowspan="2">
+                Your Decision 2:
+                <br>
+                <span class="tokens-dark">Tokens</span> Moved
+            </th>
+            <th class="example-table-header" colspan="2">Change in <span class="ecu-dark">ECUs</span></th>
+        </tr>
+        <tr>
+            <th class="example-table-header">Individual Account</th>
+            <th class="example-table-header">Group Account</th>
+        </tr>
+        <tr>
+            <td class="row-light">D</td>
+            <td class="row-white" style="padding:0 5px;">-4 Tokens, moved <i>from</i> the Group Account</td>
+            <td class="row-white">-4</td>
+            <td class="row-white">-12</td>
+        </tr>
+        <tr>
+            <td class="row-light">E</td>
+            <td class="row-white">0 Tokens moved</td>
+            <td class="row-white">+0</td>
+            <td class="row-white">+0</td>
+        </tr>
+        <tr>
+            <td class="row-light">F</td>
+            <td class="row-white">+6 Tokens, moved <i>to</i> the Group Account</td>
+            <td class="row-white">+6</td>
+            <td class="row-white">+18</td>
+        </tr>
+    </table>
+    <br>
+{{ endif }}
+
+    <br>
+    <p>
+        We will now check your understanding and allow you to you practice your
+        decision{{if treatment == 'PM'}}s{{endif}}. Once you are sure that you understand these instructions,
+        <b>click "next" to signal you are ready </b> to move on.
+    </p>
+
+    <div class="next-button">{{ next_button }}</div>
+</div>
+{{ endblock }}

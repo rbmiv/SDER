@@ -28,7 +28,7 @@
 
 {{if treatment == 'P'}}
 <div><b>Your Decision:</b> {{p}} Tokens</div>
-<div><b>Average Decision 1 of Others:</b> {{p_others}} Tokens</div>
+<div><b>Average of Others:</b> {{p_others}} Tokens</div>
 <br>
 {{endif}}
 
@@ -40,16 +40,20 @@
 <br>
 {{endif}}
 
-<div class="results-header">Practice Earnings:</div>
-    {{if treatment == 'M'}}<div><b>Random Draw:</b> {{p_ex_payoff}} ECUs</div>{{endif}}
-    <div><b>Individual Account:</b> {{personal_account}} ECUs (from {{personal_account}} Tokens)</div>
-    <div><b>Group Account:</b> {{group_payoff}} ECUs (from {{group_account}} Tokens)</div>
+
+<div class="results-header">Final Balances:</div>
+    <div><b>Your Individual Account:</b> {{personal_account}} Tokens</div>
+    <div><b>Group Account:</b> {{group_account}} Tokens</div>
         <br>
-    <div style="font-size:16pt;"><b>Your Total Practice Payoff:</b> {{total_payoff}} ECUs</div>
+
+<div class="results-header">Practice Earnings:</div>
+    {{if treatment == 'M'}}<div><b>Bonus:</b> {{p_ex_payoff}} ECUs</div>{{endif}}
+    <div><b>Your Individual Account:</b> {{personal_account}} ECUs</div>
+    <div><b>Group Account:</b> {{group_payoff}} ECUs</div>
+        <br>
+    <div style="font-size:16pt;"><b>Your Total Practice Earnings:</b> {{total_payoff}} ECUs</div>
 <br>
 
-    {{ next_button }}
+    <div class="next-button">{{ next_button }}</div>
 </div>
 {{ endblock }}
-
-

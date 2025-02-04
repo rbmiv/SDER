@@ -13,15 +13,17 @@
 {{ block content }}
 <div class="narrow-body">
     <p class="notice-text">
-        The following Decision{{if treatment == 'PM'}}s{{endif}} count{{if treatment != 'PM'}}s{{endif}}
-        towards your final payoff.
+        <b>The following Decision{{if treatment == 'PM'}}s{{endif}} count{{if treatment != 'PM'}}s{{endif}}
+        towards your final payoff.</b>
     </p>
 
     <p class="notice-text">
-        There will be only one round, so think carefully about your choices.
+        There will be <b>only one round</b>, so <b>think carefully</b> about your choices.
     </p>
 
     <br>
-    {{ next_button }}
+
+
+    <div class="next-button">{{ next_button }}</div>
 </div>
 {{ endblock }}

@@ -25,14 +25,14 @@ body {
     margin:auto;
   width: 75%;
   height: 30px;
-    padding:5px 20px 42px 20px;
+    padding:15px 20px 42px 20px;
 }
 
 .slider-container-2 {
   text-align: right;
   width: 500px;
   position: relative;
-  top: -10px;
+  top: -5px;
   height: 30px;
     padding-bottom:40px;
     padding-left:15px;
@@ -52,11 +52,22 @@ body {
     font-weight:bold;
 }
 
+.consent-subheading{
+    padding-top:4pt;
+    color: #0d6dfb;
+    font-weight:bold;
+}
+
 ul{
     margin-left:15px;
     padding-left:25px;
     padding-bottom:0;
     margin-bottom:5px;
+}
+
+ul li{
+    line-height: 1;
+    padding-bottom:8px;
 }
 
 .dynamic-slider {
@@ -74,6 +85,10 @@ ul{
   box-shadow: 0 0 2px #0a52bf inset;
 }
 
+.noUi-value.noUi-value-horizontal.noUi-value-sub.active-pip{
+    color:#0d6dfb;
+}
+
 .noUi-handle:hover{
   background: #0a52bf;
   border: 1px solid #0a52bf;
@@ -83,6 +98,10 @@ ul{
   background: #0d6eff;
   border: 1px solid #0d6eff;
   box-shadow: 0 0 2px #0d6eff inset;
+}
+
+.noUi-target {
+  border-radius: 0px;
 }
 
 .noUi-target:hover .noUi-base {
@@ -107,7 +126,6 @@ ul{
 }
 
 
-
  .tg {
       border-collapse: collapse;
       border-spacing: 0;
@@ -122,7 +140,7 @@ ul{
       border-color: black;
       border-style: solid;
       border-width: 1px;
-        padding:8px;
+        padding:4px;
     }
 
     .tg th {
@@ -219,6 +237,10 @@ ul{
     padding-bottom:8px;
 }
 
+.page-header{
+    margin-top:0;
+}
+
 .narrow-body{
     width:75%;
     margin:auto;
@@ -289,5 +311,40 @@ ul{
 
 .notice-text{
     font-size:14pt;
-    font-weight:500;
+    font-weight:400;
+}
+
+.noUi-value-sub{
+    color:gray;
+    font-size:10pt;
+}
+.noUi-value.noUi-value-horizontal.noUi-value-sub{
+    font-size:12pt;
+    top:0;
+}
+.noUi-value.noUi-value-horizontal.noUi-value-large.active-pip{
+    top:0;
+    color:#0d6dfb
+}
+.noUi-value.noUi-value-horizontal.noUi-value-large{
+    top:0;
+    font-size:12pt;
+    color: gray;
+}
+.noUi-marker.noUi-marker-horizontal.noUi-marker-sub{
+    top:0;
+}
+.noUi-marker.noUi-marker-horizontal.noUi-marker-large{
+    top:0;
+    padding-top:8px;
+}
+.noUi-marker{
+    position:absolute;
+    background:#CCC
+}
+.next-button {
+    display: flex;
+    justify-content: flex-end;  /* This will align the button to the right */
+    width: 100%;               /* Make sure it spans full width of parent */
+    margin-top: 20px;         /* Add some spacing from content above */
 }

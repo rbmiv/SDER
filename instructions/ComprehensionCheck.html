@@ -73,6 +73,30 @@
             </div>
         </div>
 
-        {{ next_button }}
+        <div class="form-group">
+            6. If your <b>randomly-drawn number is 6</b>, how many tokens do you receive as <b>Bonus Earnings</b>?
+            <div class="radio-select-option">
+                {{ form.random_draw_individual }}
+                {% if form.random_draw_individual.errors %}
+                    {% for error in form.random_draw_individual.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            7. If your <b>randomly-drawn number is 3</b>, how many tokens are added to the <b>Group Account</b>?
+            <div class="radio-select-option">
+                {{ form.random_draw_group }}
+                {% if form.random_draw_group.errors %}
+                    {% for error in form.random_draw_group.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+    <div class="next-button">{{ next_button }}</div>
 </div>
 {{ endblock }}

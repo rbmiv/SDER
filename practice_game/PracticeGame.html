@@ -5,7 +5,7 @@
 
 {{ block title }}
 <div class="narrow-body">
-    Practice Game
+    Practice
 </div>
 {{ endblock }}
 
@@ -16,7 +16,7 @@
     <div class="instructions">
       <p>
         Use the sliders below to select practice Decisions for yourself and your other group members. After making your
-        decisions, hit Next to see your practice Results. You may repeat this practice up to 5 times.
+        decisions, hit Next to see your practice Results. There will be three practice rounds.
       </p>
         <b>Remember:</b>
         <ul id="remember-list">
@@ -64,12 +64,12 @@
 
     <br><br>
 
-<input type="hidden" id="player_p" name="p">
-<input type="hidden" id="player_p_others" name="p_others">
-<input type="hidden" id="player_p_ex" name="p_ex">
-<input type="hidden" id="player_m" name="m">
-<input type="hidden" id="player_m_others" name="m_others">
-    {{ next_button }}
+    <input type="hidden" id="player_p" name="p">
+    <input type="hidden" id="player_p_others" name="p_others">
+    <input type="hidden" id="player_p_ex" name="p_ex">
+    <input type="hidden" id="player_m" name="m">
+    <input type="hidden" id="player_m_others" name="m_others">
+    <div class="next-button">{{ next_button }}</div>
 </div>
 </body>
 {{ endblock }}
@@ -116,7 +116,7 @@
                         let p_others_val = parseInt(slider2.noUiSlider.get());
                         min = -(p_ex_val + p_others_val * 3) / 4;
                     }
-                    min = Math.round(min); // Round the min value
+                    min = Math.ceil(min); // Round the min value to the higher integer
                     if (slider4) updateSliderRange(slider4, min, 10); // Check if slider4 is defined
                     if (slider5) updateSliderRange(slider5, min, 10); // Check if slider5 is defined
                 }

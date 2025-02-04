@@ -11,14 +11,15 @@
 {{ block content }}
 <div class="narrow-body">
 
-    <p class="notice-text">Your randomly-drawn number is {{p_ex}}. </p>
+    <p class="notice-text"><b>Your random number is {{p_ex}}</b>. </p>
 
     <p class="notice-text">
         This means that {{p_ex}} Tokens will be added to the starting Group Account Balance, and, in addition to
-        your payoff from the Individual and Group Accounts, you will receive {{p_ex_payoff}} ECUs.
+        your payoff from the Individual and Group Accounts, you will receive {{p_ex_payoff}} ECUs as Bonus Earnings.
     </p>
 
+
     <br>
-    {{ next_button }}
+    <div class="next-button">{{ next_button }}</div>
 </div>
 {{ endblock }}

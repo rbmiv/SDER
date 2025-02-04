@@ -1,0 +1,27 @@
+{{block styles}}
+<link rel="stylesheet" type="text/css" href="{{ static 'global/global_styles.css' }}"/>
+{{endblock}}
+
+{{ block title }}
+<div class="narrow-body">
+    Post-Task Survey
+</div>
+{{ endblock }}
+
+{% block content %}
+
+    <p>
+        Please answer the following questions.
+    </p>
+
+    {{form_field 'age'}}
+    {{form_field 'gender'}}
+    {{form_field 'race'}}
+    {{form_field 'study_year'}}
+    {{form_field 'study_field'}}
+    {{form_field 'gpa_avg'}}
+    {{form_field 'experience'}}
+
+    <div class="next-button">{{ next_button }}</div>
+
+{% endblock %}

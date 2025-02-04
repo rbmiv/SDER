@@ -15,8 +15,8 @@
 {{ block content }}
 <body>
     <div class="instructions">
-      Use the sliders to select your Decision{% if treatment == 'PM' %} 2{% endif %} below for each potential
-      balance of the Group Account.
+      Use the sliders below to select how many tokens to move to (+) or from (-) the Group Account, for each potential
+      starting balance of the Group Account.
       <br>
         <b>Remember:</b>
         <ul id="remember-list">
@@ -71,7 +71,9 @@
   <input type="hidden" name="m9" id="player_m9" value="0">
   <input type="hidden" name="m10" id="player_m10" value="0">
   <br>
-  {{ next_button }}
+
+
+    <div class="next-button">{{ next_button }}</div>
 </body>
 {{ endblock }}
 
@@ -98,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(`token-info-${i}`).innerText = `${j} Tokens`;
 
         let slider = document.getElementById(`slider${i}`);
-        let sliderPercentage = ((10 + Math.floor((p_ex + i*step)/4)) / 20) * 100;
+        let sliderPercentage = ((10 + Math.floor((p + p_ex + i*step)/4)) / 20) * 100;
         slider.style.width = `${sliderPercentage}%`;
 
         let initialTokens = 10; // Assuming 10 initial tokens in the individual account
@@ -112,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 density: 25
             },
             range: {
-                min: -Math.floor((p_ex + i*step)/4), // Minimum is negative of the average tokens for that row
+                min: -Math.floor((p + p_ex + i*step)/4), // Minimum is negative of the average tokens for that row
                 max: 10
             },
             step: 1
