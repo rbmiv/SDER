@@ -1,6 +1,7 @@
 from otree.api import *
 import csv
 import pagetime
+import math
 
 doc = """
 This is the game app for all treatments. Different pages are displayed depending on treatment type, which is assigned 
@@ -13,6 +14,15 @@ Some important notes for setup:
     in the data. Group number should start at 2. This is because "group 1" will be the initial grouping of all players 
     for previous apps in oTree, and when it creates a new group of 4 in the social_dilemma_game app, it makes group 2
     as the next group. Groups will be formed based on arrival time after completing practice questions.
+    
+Page sequence: 
+<ul>
+    <li>"Real Decisions" Introduction Page</li>
+    <li>Decision P (Treatments P and PM)</li>
+    <li>Random Draw Page (Treatment M)</li>
+    <li>Decision M (Treatments M and PM)</li>
+    <li>Results</li>
+</ul>
 """
 
 
@@ -33,12 +43,12 @@ class Subsession(BaseSubsession):
 
 
 def group_by_arrival_time_method(subsession, waiting_players):
-    print(f'Current waiting_players count: {len(waiting_players)}')
-    for wp in waiting_players:
-        print(f'Waiting Player ID: {wp.id_in_subsession}')
+    # print(f'Current waiting_players count: {len(waiting_players)}')
+    # for wp in waiting_players:
+    #     print(f'Waiting Player ID: {wp.id_in_subsession}')
     if len(waiting_players) >= 4:
         group = waiting_players[:4]
-        print(f'Forming group with players: {[p.id_in_subsession for p in group]}')
+        # print(f'Forming group with players: {[p.id_in_subsession for p in group]}')
         return group
 
 
@@ -68,38 +78,38 @@ class Player(BasePlayer):
     p_ex = models.IntegerField(initial=0, min=0, max=10)
     p_ex_id = models.IntegerField(initial=999)
     m0 = models.IntegerField(initial=0, min=0, max=10)
-    m1 = models.IntegerField(initial=0, min=-1, max=10)
-    m2 = models.IntegerField(initial=0, min=-2, max=10)
-    m3 = models.IntegerField(initial=0, min=-3, max=10)
-    m4 = models.IntegerField(initial=0, min=-4, max=10)
-    m5 = models.IntegerField(initial=0, min=-5, max=10)
-    m6 = models.IntegerField(initial=0, min=-6, max=10)
-    m7 = models.IntegerField(initial=0, min=-7, max=10)
-    m8 = models.IntegerField(initial=0, min=-8, max=10)
-    m9 = models.IntegerField(initial=0, min=-9, max=10)
+    m1 = models.IntegerField(initial=0, min=-10, max=10)
+    m2 = models.IntegerField(initial=0, min=-10, max=10)
+    m3 = models.IntegerField(initial=0, min=-10, max=10)
+    m4 = models.IntegerField(initial=0, min=-10, max=10)
+    m5 = models.IntegerField(initial=0, min=-10, max=10)
+    m6 = models.IntegerField(initial=0, min=-10, max=10)
+    m7 = models.IntegerField(initial=0, min=-10, max=10)
+    m8 = models.IntegerField(initial=0, min=-10, max=10)
+    m9 = models.IntegerField(initial=0, min=-10, max=10)
     m10 = models.IntegerField(initial=0, min=-10, max=10)
     m_final = models.IntegerField(initial=0)
 
     def get_m_value(self, group_value):
-        if group_value - self.p == 0:
+        if group_value - self.p - self.p_ex == 0:
             return self.m0
-        elif group_value - self.p <= 3:
+        elif group_value - self.p - self.p_ex <= 3:
             return self.m1
-        elif group_value - self.p <= 6:
+        elif group_value - self.p - self.p_ex <= 6:
             return self.m2
-        elif group_value - self.p <= 9:
+        elif group_value - self.p - self.p_ex <= 9:
             return self.m3
-        elif group_value - self.p <= 12:
+        elif group_value - self.p - self.p_ex <= 12:
             return self.m4
-        elif group_value - self.p <= 15:
+        elif group_value - self.p - self.p_ex <= 15:
             return self.m5
-        elif group_value - self.p <= 18:
+        elif group_value - self.p - self.p_ex <= 18:
             return self.m6
-        elif group_value - self.p <= 21:
+        elif group_value - self.p - self.p_ex <= 21:
             return self.m7
-        elif group_value - self.p <= 24:
+        elif group_value - self.p - self.p_ex <= 24:
             return self.m8
-        elif group_value - self.p <= 27:
+        elif group_value - self.p - self.p_ex <= 27:
             return self.m9
         else:
             return self.m10
@@ -259,7 +269,7 @@ class Results(Page):
             personal_account = 10 - player.get_m_value(group.p_total)
 
         group_account = group.final_group_account
-        p_others = round((group.p_total - player.p) / 3, 1)
+        p_others = round((group.p_total - player.p - player.p_ex) / 3, 1)
         m_others = round((group.m_total - player.m_final) / 3, 1)
         group_payoff = group.final_group_account * C.MPCR
         if treatment == 'M':
@@ -267,7 +277,15 @@ class Results(Page):
         else:
             p_ex_payoff = 0
         total_payoff = personal_account + group_payoff + p_ex_payoff
-        player.participant.total_payoff = total_payoff
+
+        print('step 1: ', player.participant.payoff)
+        exchange_rate = player.session.config['exchange_rate']
+        print('exchange rate: ', exchange_rate)
+        player.participant.payoff = total_payoff * exchange_rate
+        print('step 2: ', player.participant.payoff)
+        player.participant.payoff = math.ceil(total_payoff * exchange_rate * 4) / 4
+        print('step 3: ', player.participant.payoff)
+
         return dict(
             treatment=treatment,
             personal_account=personal_account,
@@ -285,22 +303,6 @@ class Results(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.time_results = pagetime.last(player.participant)
-
-
-class EndScreen(Page):
-
-
-    @staticmethod
-    def vars_for_template(player):
-        player.participant.finished = True
-
-        return dict(
-            total_payoff = player.participant.total_payoff,
-            participation_fee = player.session.config.participation_fee,
-            survey_payment = player.session.config.survey_payment
-        )
-
-
 
 
 page_sequence = [GroupingWaitPage, RealDecisions, DecisionP, RandomDraw, DecisionM, ResultsWaitPage, Results]

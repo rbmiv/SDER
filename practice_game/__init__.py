@@ -2,7 +2,20 @@ from otree.api import *
 import pagetime
 
 doc = """
+This app allows subjects to complete three practice rounds where they can choose:
 
+<ul>
+    <li>Hypothetical decisions for themselves</li>
+    <li>Average hypothetical decisions for their group members</li>
+    <li>Random draws for themselves and their group members (Treatment M only)</li>
+</ul>
+
+Page sequence:
+<ul>
+    <li>Practice Instructions Page</li>
+    <li>Practice Game (3x)</li>
+    <li>Practice Results (3x)</li>
+</ul>
 """
 
 

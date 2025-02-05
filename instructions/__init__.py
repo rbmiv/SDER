@@ -3,7 +3,16 @@ import time
 import pagetime
 
 doc = """
-This app creates assigns treatment condition and then displays the proper set of instructions.
+This app assigns treatment condition and then displays the proper set of instructions.
+<br><br>
+Page sequence:
+<ul>
+    <li>Informed Consent Form</li>
+    <li>Welcome Page</li>
+    <li>Decision Instructions</li>
+    <li>Example Decisions</li>
+    <li>Comprehension Check</li>
+</ul>
 """
 
 
@@ -71,6 +80,7 @@ class Player(BasePlayer):
     time_examples = models.IntegerField()
     time_welcome = models.IntegerField()
 
+
 # PAGES
 
 @pagetime.track
@@ -78,6 +88,7 @@ class Consent(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.time_consent = pagetime.last(player.participant)
+
 
 @pagetime.track
 class Welcome(Page):
@@ -91,6 +102,7 @@ class Welcome(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.time_welcome = pagetime.last(player.participant)
+
 
 @pagetime.track
 class Decisions(Page):
@@ -119,6 +131,7 @@ class Examples(Page):
     def before_next_page(player, timeout_happened):
         player.time_examples = pagetime.last(player.participant)
 
+
 @pagetime.track
 class ComprehensionCheck(Page):
     form_model = 'player'
@@ -136,7 +149,6 @@ class ComprehensionCheck(Page):
             form_fields += ['random_draw_group', 'random_draw_individual']
         return form_fields
 
-
     @staticmethod
     def vars_for_template(player: Player):
         treatment = player.participant.treatment
@@ -151,9 +163,13 @@ class ComprehensionCheck(Page):
             value_individual_others=1,
             value_group_self=2,
             value_group_others=2,
-            random_draw_group=3,
-            random_draw_individual=3
         )
+
+        if player.participant.treatment == 'M':
+            solutions.update(
+                random_draw_group=3,
+                random_draw_individual=3
+            )
 
         error_messages = {}
 
@@ -170,6 +186,7 @@ class ComprehensionCheck(Page):
 
 class ResultsWaitPage(WaitPage):
     pass
+
 
 @pagetime.track
 class Results(Page):

@@ -1,8 +1,19 @@
 from otree.api import *
 import time
 import pagetime
+import math
 
 doc = """
+This app shows the post-task survey and end screen.
+
+Page sequence:
+
+<ul>
+    <li>Survey Instructions</li>
+    <li>Survey Page</li>
+    <li>End Screen</li>
+</ul>
+
 """
 
 
@@ -31,7 +42,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     start_time = models.FloatField()
     # Demographics
-    age = models.IntegerField(label='Q1) How old are you?', min=13, max=125)
+    age = models.IntegerField(label='1. How old are you?', min=13, max=125)
 
     gender = models.StringField(
         choices=[
@@ -40,12 +51,12 @@ class Player(BasePlayer):
             ['Other', 'Other'],
             ['I prefer not to say.', 'I prefer not to say.'],
         ],
-        label='Q2) What is your gender?',
+        label='2. What is your gender?',
         widget=widgets.RadioSelect,
     )
 
     race = models.IntegerField(
-        label="Q3) Which race or ethnicity best describes you? ",
+        label="3. Which race or ethnicity best describes you? ",
         choices=[
             [1, 'White or Caucasian'],
             [2, 'Black or African-American'],
@@ -60,7 +71,7 @@ class Player(BasePlayer):
 
     # academics
     study_year = models.IntegerField(
-        label="Q4) What year are you?",
+        label="4. What year are you?",
         choices=[
             [1, '1st-year undergraduate'],
             [2, '2nd-year undergraduate'],
@@ -86,12 +97,12 @@ class Player(BasePlayer):
             ['Social Studies', 'Social Studies'],
             ['Other', 'Other'],
         ],
-        label='Q5) What is your field of study',
+        label='5) What is your field of study',
         widget=widgets.RadioSelect,
     )
 
     gpa_avg = models.FloatField(
-        label="Q6) What is your average GPA?",
+        label="6. What is your average GPA?",
         choices=[
             [0.5, 'Less than 1'],
             [1.5, 'Between 1 and 2'],
@@ -104,12 +115,12 @@ class Player(BasePlayer):
     )
 
     experience = models.IntegerField(
-        label="Q7) Please indicate how many decision-making experiments you have participated in (including this experiments).",
+        label="7. Please indicate how many decision-making experiments you have participated in (including this experiment).",
         choices=[
             [1, 'This is the first time.'],
             [2, '2 - 4'],
             [3, '5 - 7'],
-            [4, '8 -'],
+            [4, '8 or more'],
             [0, 'I prefer not to say.']
         ],
         widget=widgets.RadioSelect,
@@ -121,6 +132,12 @@ class Player(BasePlayer):
 # PAGES
 @pagetime.track
 class SurveyInstructions(Page):
+
+    @staticmethod
+    def vars_for_template(player):
+        participation_fee= format(player.session.config['participation_fee'], '.2f')
+        return dict(participation_fee=participation_fee)
+
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.time_survey_instructions = pagetime.last(player.participant)
@@ -150,10 +167,15 @@ class EndScreen(Page):
 
     @staticmethod
     def vars_for_template(player):
+        payoff = player.participant.payoff
+
+        participation_fee = player.session.config['participation_fee']
+        total_earnings = participation_fee + payoff
+
         return dict(
-            total_payoff = player.participant.total_payoff,
-            participation_fee = player.session.config.participation_fee,
-            post_task_payment = player.session.config.post_task_payment
+            payoff=format(payoff, '.2f'),
+            participation_fee=format(participation_fee, '.2f'),
+            total_earnings=format(total_earnings, '.2f'),
         )
 
 

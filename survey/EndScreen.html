@@ -13,14 +13,13 @@
 
     <p>Thank you for your participation.</p>
 
-    <p>Below is a summary of your earnings:</p>
+    <div class="results-header">Your Earnings Summary:</div>
     <p>
-        <b>Participation Payment:</b> {{participation_fee}}
-        <b>Decision Task Earnings:</b> {{total_payoff}}
-        <b>Post-Task Survey Payment:</b> {{survey_payment}}
+        <b>Decision Task Earnings:</b> ${{payoff}}<br>
+        <b>Survey Participation Payment:</b> ${{participation_fee}}<br>
     </p>
+    <div style="font-size:16pt;"><b>Your Total Earnings:</b> ${{total_earnings}} </div>
 
-    <div class="next-button">{{ next_button }}</div>
 </div>
 
 

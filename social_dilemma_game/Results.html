@@ -27,7 +27,11 @@
 
     {{if treatment == 'M'}}
     <div class="results-header">Random Draws:</div>
-        <b>Total Tokens Drawn:</b> {{p_total}} Tokens
+        <b>Your Number:</b> {{p_ex}}
+        <br>
+        <b>Average Number Drawn by Others:</b> {{p_others}}
+        <br>
+        <b>Group Account Starting Balance:</b> {{p_total}} Tokens
         <br>
         <br>
      <div class="results-header">Decisions:</div>
@@ -44,8 +48,8 @@
     {{endif}}
 
 <br><br>
-<div class="results-header">Earnings</div>
-{{if treatment == 'M'}}<div><b>Your Random Draw:</b> {{p_ex_payoff}} ECU</div>{{endif}}
+<div class="results-header">Your Earnings</div>
+{{if treatment == 'M'}}<div><b>Bonus Earnings:</b> {{p_ex_payoff}} ECU</div>{{endif}}
     <b>Individual Account:</b> {{personal_account}} ECU (from {{personal_account}} Tokens)
 <br>
     <b>Group Account:</b> {{group_payoff}} ECU (from {{group_account}} Tokens)
@@ -53,7 +57,6 @@
     <div style="font-size:16pt;"><b>Your Total Payoff:</b> {{total_payoff}} ECUs</div>
 
 <br>
-
 
     <div class="next-button">{{ next_button }}</div>
 </div>
