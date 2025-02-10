@@ -192,7 +192,7 @@ class ExamplesWaitPage(WaitPage):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        player.examples_wait = pagetime.last(player.participant)
+        player.time_examples_wait = pagetime.last(player.participant)
 
 
 @pagetime.track

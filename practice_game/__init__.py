@@ -150,7 +150,7 @@ class PracticeWaitPage(WaitPage):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        player.practice_wait = pagetime.last(player.participant)
+        player.time_practice_wait = pagetime.last(player.participant)
 
 
 page_sequence = [PracticeInstructions, PracticeGame, PracticeResults, PracticeWaitPage]
