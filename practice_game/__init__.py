@@ -39,12 +39,14 @@ class Player(BasePlayer):
     p = models.IntegerField(initial=0, min=0, max=10, blank=True)  # hypothetical personal P (P, PM)
     p_others = models.IntegerField(initial=0, min=0, max=10, blank=True)  # hyp. avg P of others (P, PM)
     p_ex = models.IntegerField(initial=0, min=0, max=10, blank=True)  # hyp. exogenous contribution (P)
-    m = models.IntegerField(initial=0, min=-10, max=10, blank=True)   # hyp. personal M (M, PM)
+    m = models.IntegerField(initial=0, min=-10, max=10, blank=True)  # hyp. personal M (M, PM)
     m_others = models.IntegerField(initial=0, min=-10, max=10, blank=True)  # hyp. avg M of others (PM)
     final_group_account = models.IntegerField(initial=0, blank=True)  # final group account balance (P, M, PM)
     time_practice_instructions = models.IntegerField()
     time_practice_game = models.IntegerField()
     time_practice_results = models.IntegerField()
+    time_practice_wait = models.IntegerField()
+
 
 class Group(BaseGroup):
     pass
@@ -69,6 +71,10 @@ class PracticeGame(Page):
     form_model = 'player'
     form_fields = ['p', 'p_others', 'm', 'p_ex', 'm_others']
 
+    timeout_seconds = 120
+    timer_text = 'Time left:'
+
+
     @staticmethod
     def vars_for_template(player):
         treatment = player.participant.treatment
@@ -90,6 +96,7 @@ class PracticeGame(Page):
 
         player.final_group_account = final_group_account
 
+
 @pagetime.track
 class PracticeResults(Page):
 
@@ -108,7 +115,7 @@ class PracticeResults(Page):
             personal_account = 10 - player.m
 
         group_account = player.final_group_account
-        group_payoff = round(player.final_group_account * C.MPCR,2)
+        group_payoff = round(player.final_group_account * C.MPCR, 2)
         p_total = player.p + player.p_others * 3
         if treatment == 'M':
             p_ex_payoff = 10 - player.p_ex
@@ -130,4 +137,20 @@ class PracticeResults(Page):
             p_ex_payoff=p_ex_payoff
         )
 
-page_sequence = [PracticeInstructions, PracticeGame, PracticeResults]
+
+class PracticeWaitPage(WaitPage):
+    wait_for_all_groups = True
+    title_text = "Please wait"
+    body_text = "Waiting for other subjects to finish practice rounds."
+
+    @staticmethod
+    def is_displayed(player):
+        display = (player.round_number == C.NUM_ROUNDS)
+        return display
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.practice_wait = pagetime.last(player.participant)
+
+
+page_sequence = [PracticeInstructions, PracticeGame, PracticeResults, PracticeWaitPage]

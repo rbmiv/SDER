@@ -79,6 +79,7 @@ class Player(BasePlayer):
     time_decisions = models.IntegerField()
     time_examples = models.IntegerField()
     time_welcome = models.IntegerField()
+    time_examples_wait = models.IntegerField()
 
 
 # PAGES
@@ -184,8 +185,14 @@ class ComprehensionCheck(Page):
         player.time_comprehension = pagetime.last(player.participant)
 
 
-class ResultsWaitPage(WaitPage):
-    pass
+class ExamplesWaitPage(WaitPage):
+    wait_for_all_groups = True
+    title_text = "Please wait"
+    body_text = "Waiting for other subjects to finish reading instructions."
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.examples_wait = pagetime.last(player.participant)
 
 
 @pagetime.track
@@ -196,4 +203,4 @@ class Results(Page):
         player.participant.time_results = int(time.time())
 
 
-page_sequence = [Consent, Welcome, Decisions, Examples, ComprehensionCheck]
+page_sequence = [Consent, Welcome, Decisions, Examples, ExamplesWaitPage, ComprehensionCheck]

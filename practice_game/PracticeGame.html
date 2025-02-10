@@ -10,6 +10,17 @@
 {{ endblock }}
 
 {{ block content }}
+<style>
+    p{
+        margin:0;
+    }
+
+    .otree-timer.alert.alert-warning{
+        padding: 10px;
+        margin: 1rem;
+        display: none;
+    }
+</style>
 
 <body>
 <div class="narrow-body">
@@ -75,6 +86,15 @@
 {{ endblock }}
 
 {{ block script }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            $('.otree-timer__time-left').on('update.countdown', function (event) {
+                if (event.offset.totalSeconds === 30) {
+                    $('.otree-timer').show();
+                }
+            });
+        });
+    </script>
     <script src="{% static 'global/nouislider.min.js' %}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
