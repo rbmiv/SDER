@@ -98,7 +98,8 @@ class Welcome(Page):
     def vars_for_template(player: Player):
         treatment = player.participant.treatment
         exchange_rate = player.subsession.session.config['exchange_rate']
-        return dict(treatment=treatment, exchange_rate=exchange_rate)
+        inverse_exchange_rate = round(1/exchange_rate)
+        return dict(treatment=treatment, exchange_rate=exchange_rate, inverse_exchange_rate=inverse_exchange_rate)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
