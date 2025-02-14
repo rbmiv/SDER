@@ -185,10 +185,8 @@ class ComprehensionCheck(Page):
         player.time_comprehension = pagetime.last(player.participant)
 
 
-class ExamplesWaitPage(WaitPage):
-    wait_for_all_groups = True
-    title_text = "Please wait"
-    body_text = "Waiting for other subjects to finish reading instructions."
+@pagetime.track
+class ExamplesWaitPage(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
