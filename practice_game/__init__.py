@@ -12,9 +12,9 @@ This app allows subjects to complete three practice rounds where they can choose
 
 Page sequence:
 <ul>
-    <li>Practice Instructions Page</li>
-    <li>Practice Game (3x)</li>
-    <li>Practice Results (3x)</li>
+    <li>Payoff Calculator Instructions Page</li>
+    <li>Payoff Calculator (3x)</li>
+    <li>Payoff Calculator Results (3x)</li>
 </ul>
 """
 
@@ -37,10 +37,10 @@ class Player(BasePlayer):
     #                             choices=['Repeat practice rounds', 'Move on to real decision rounds'],
     #                             widget=widgets.RadioSelect)
     p = models.IntegerField(initial=0, min=0, max=10, blank=True)  # hypothetical personal P (P, PM)
-    p_others = models.IntegerField(initial=0, min=0, max=10, blank=True)  # hyp. avg P of others (P, PM)
+    p_others = models.IntegerField(initial=0, min=0, max=30, blank=True)  # hyp. avg P of others (P, PM)
     p_ex = models.IntegerField(initial=0, min=0, max=10, blank=True)  # hyp. exogenous contribution (P)
     m = models.IntegerField(initial=0, min=-10, max=10, blank=True)  # hyp. personal M (M, PM)
-    m_others = models.IntegerField(initial=0, min=-10, max=10, blank=True)  # hyp. avg M of others (PM)
+    m_others = models.IntegerField(initial=0, min=-30, max=30, blank=True)  # hyp. avg M of others (PM)
     final_group_account = models.IntegerField(initial=0, blank=True)  # final group account balance (P, M, PM)
     time_practice_instructions = models.IntegerField()
     time_practice_game = models.IntegerField()
@@ -71,7 +71,7 @@ class PracticeGame(Page):
     form_model = 'player'
     form_fields = ['p', 'p_others', 'm', 'p_ex', 'm_others']
 
-    timeout_seconds = 120
+    timeout_seconds = 500
     timer_text = 'Time left:'
 
 
@@ -88,11 +88,11 @@ class PracticeGame(Page):
         treatment = player.participant.treatment
 
         if treatment == 'P':
-            final_group_account = player.p + player.p_others * 3
+            final_group_account = player.p + player.p_others
         elif treatment == 'M':
-            final_group_account = player.p_ex + player.p_others * 3 + player.m + player.m_others * 3
+            final_group_account = player.p_ex + player.p_others + player.m + player.m_others
         else:  # treatment == 'PM'
-            final_group_account = player.p + player.p_others * 3 + player.m + player.m_others * 3
+            final_group_account = player.p + player.p_others + player.m + player.m_others
 
         player.final_group_account = final_group_account
 
@@ -116,7 +116,7 @@ class PracticeResults(Page):
 
         group_account = player.final_group_account
         group_payoff = round(player.final_group_account * C.MPCR, 2)
-        p_total = player.p + player.p_others * 3
+        p_total = player.p + player.p_others
         if treatment == 'M':
             p_ex_payoff = 10 - player.p_ex
         else:
@@ -141,7 +141,7 @@ class PracticeResults(Page):
 class PracticeWaitPage(WaitPage):
     wait_for_all_groups = True
     title_text = "Please wait"
-    body_text = "Waiting for other subjects to finish practice rounds."
+    body_text = "Waiting for other subjects to finish payoff calculator practice."
 
     @staticmethod
     def is_displayed(player):

@@ -39,6 +39,17 @@ body {
     padding-right:15px;
 }
 
+.slider-container-3 {
+  text-align: right;
+  position: relative;
+  top: -5px;
+  height: 30px;
+    padding-top:20px;
+    padding-bottom:40px;
+    padding-left:15px;
+    padding-right:15px;
+}
+
 .instructions{
     background: #e6e6e6;
     border: 1px solid black;
@@ -347,4 +358,61 @@ ul li{
     justify-content: flex-end;  /* This will align the button to the right */
     width: 100%;               /* Make sure it spans full width of parent */
     margin-top: 20px;         /* Add some spacing from content above */
+}
+
+.example-a {
+    font-weight:bold;
+    color: #43bf75;
+}
+
+.example-b {
+    font-weight:bold;
+    color: #bf5454;
+}
+
+.example-c {
+    font-weight:bold;
+    color: #4394bf;
+}
+
+.noUi-value-active {
+        color: #0d6dfb;
+        font-weight: bold;
+        visibility: visible !important;
+
+}
+
+.noUi-value.noUi-value-horizontal.noUi-value-large.noUi-value-active{
+        color: #0d6dfb;
+        font-weight: bold;
+        font-size:16pt;
+}
+
+.noUi-value.noUi-value-horizontal.noUi-value-sub{
+        font-size:14pt;
+}
+.noUi-value.noUi-value-horizontal.noUi-value-sub.noUi-value-active{
+        font-size:16pt;
+}
+
+.noUi-value.noUi-value-horizontal.noUi-value-large{
+        font-size:14pt;
+        color: gray;
+}
+
+ .practice-container {
+           display: flex;
+           justify-content: space-between;
+       }
+.left-column {
+   width: 30%;
+}
+.right-column {
+   width: 30%;
+}
+.practice-balances{
+    padding-left:70px;
+}
+.practice-td{
+    width: 500px;
 }

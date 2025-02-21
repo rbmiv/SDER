@@ -5,7 +5,7 @@
 
 {{ block title }}
 <div class="narrow-body">
-    Practice
+    Payoff Calculator
 </div>
 {{ endblock }}
 
@@ -20,6 +20,11 @@
         margin: 1rem;
         display: none;
     }
+
+    .section-divider {
+        border-bottom: 1px solid gray;
+        height:20px;
+    }
 </style>
 
 <body>
@@ -27,60 +32,98 @@
     <div class="instructions">
       <p>
         Use the sliders below to select practice Decisions for yourself and your other group members. After making your
-        decisions, hit Next to see your practice Results. There will be three practice rounds.
+        decisions, hit Next to see the final calculated payoffs. You can repeat this practice 3 times.
       </p>
-        <b>Remember:</b>
-        <ul id="remember-list">
-          <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
-          <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
-        </ul>
+      <b>Remember:</b>
+      <ul id="remember-list">
+        <li><span class="tokens">Tokens</span> are worth <span class="ecu">3 ECUs</span> in the <b>Group Account</b> (0.75 ECUs per group member)</li>
+        <li><span class="tokens">Tokens</span> are worth <span class="ecu">1 ECU</span> in your <b>Individual Account</b></li>
+      </ul>
     </div>
 
-    <div class="decision-1-subsection" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
-        Your Decision{% if treatment == 'PM' %} 1{% endif %}
-    </div>
-    <div class="slider-container-1" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
-        <div class="slider" id="slider1"></div>
-    </div>
+        <table style="width:100%">
+            <!-- Decision 1 Part -->
+            <tr>
+                <td class="practice-td">
+                    <div class="decision-1-subsection" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
+                        Your Decision{% if treatment == 'PM' %} 1{% endif %}
+                    </div>
+                    <div class="decision-1-subsection" {% if treatment != 'M' %} style="display: none" {% endif %}>
+                        Your Randomly-Drawn Number
+                    </div>
+                    <div class="slider-container-3" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
+                        <div class="slider" id="slider1"></div>
+                    </div>
+                    <div class="slider-container-3" {% if treatment != 'M' %} style="display: none" {% endif %}>
+                        <div class="slider" id="slider3"></div>
+                    </div>
+                </td>
+                <!-- Merged cell for Balances after Decision 1 -->
+                <td rowspan="2" class="practice-balances">
+                    <span class="results-header">{{if treatment == 'M'}}Balances After Random Draws: {{endif}}{{if treatment != 'M'}}Balances After Decision{{if treatment == 'PM'}} 1:{{endif}}{{endif}}</span><br>
+                    <b>Your {{if treatment != 'M'}}Individual Account:{{endif}}
+                            {{if treatment == 'M'}}Bonus Earnings:{{endif}}</b> <span id="balance1"></span><br>
+                        {{if treatment == 'M'}}<b>Total Bonus Earnings of Others:</b> <span id="group_p_ex"></span>{{endif}}
 
-    <div class="decision-1-subsection" {% if treatment != 'M' %} style="display: none" {% endif %}>Your Randomly-Drawn Number</div>
-    <div class="slider-container-1" {% if treatment != 'M' %} style="display: none" {% endif %}>
-        <div class="slider" id="slider3"></div>
-    </div>
+                    <b>Group Account:</b> <span id="group_balance1"></span>
+                </td>
 
-    <div class="decision-1-subsection" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
-        Average Decision{% if treatment == 'PM' %} 1{% endif %} of Others in Your Group
-    </div>
-    <div class="decision-1-subsection" {% if treatment not in ['M'] %} style="display: none" {% endif %}>
-        Average Random Number Drawn by Others
-    </div>
-    <div class="slider-container-1">
-        <div class="slider" id="slider2"></div>
-    </div>
+            </tr>
+            <tr>
+                <td>
+                    <div class="decision-1-subsection" {% if treatment not in ['PM', 'P'] %} style="display: none" {% endif %}>
+                        Total of Others' Decision{% if treatment == 'PM' %} 1{% endif %}{% if treatment == 'P' %}s{% endif %}
+                    </div>
+                    <div class="decision-1-subsection" {% if treatment not in ['M'] %} style="display: none" {% endif %}>
+                        Total of Random Numbers Drawn by Others
+                    </div>
+                    <div class="slider-container-3">
+                        <div class="slider" id="slider2"></div>
+                    </div>
+                </td>
+            </tr>
+            <!-- Section Divider -->
+            <tr class="section-divider" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                <td colspan="2"></td>
+            </tr>
+            <!-- Decision 2 Part -->
+            <tr {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                <td>
+                    <div class="decision-1-subsection" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                        Your Decision{% if treatment == 'PM' %} 2{% endif %}
+                    </div>
+                    <div class="slider-container-3" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                        <div class="slider" id="slider4"></div>
+                    </div>
+                </td>
+                <!-- Merged cell for Balances after Decision 2 -->
+                <td rowspan="2" class="practice-balances">
+                    <span class="results-header">Final Balances:</span><br>
+                    <b>Your Individual Account:</b> <span id="balance2"></span><br>
+                    <b>Group Account:</b> <span id="group_balance2"></span>
+                </td>
+            </tr>
+            <tr {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                <td>
+                    <div class="decision-1-subsection" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                        Total  of Others' Decision{% if treatment == 'PM' %} 2{% endif %}
+                    </div>
+                    <div class="slider-container-3" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
+                        <div class="slider" id="slider5"></div>
+                    </div>
+                </td>
+            </tr>
 
-    <div class="decision-1-subsection" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
-        Average Decision{% if treatment == 'PM' %} 2{% endif %} of Others
-    </div>
-    <div class="slider-container-1" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
-        <div class="slider" id="slider5"></div>
-    </div>
-
-        <div class="decision-1-subsection" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
-            Your Decision{% if treatment == 'PM' %} 2{% endif %}
-        </div>
-        <div class="slider-container-1" {% if treatment not in ['PM', 'M'] %} style="display: none" {% endif %}>
-            <div class="slider" id="slider4"></div>
-        </div>
-
+        </table>
 
     <br><br>
-
     <input type="hidden" id="player_p" name="p">
     <input type="hidden" id="player_p_others" name="p_others">
     <input type="hidden" id="player_p_ex" name="p_ex">
     <input type="hidden" id="player_m" name="m">
     <input type="hidden" id="player_m_others" name="m_others">
     <div class="next-button">{{ next_button }}</div>
+
 </div>
 </body>
 {{ endblock }}
@@ -102,6 +145,16 @@
             const items = rememberList.querySelectorAll("li");
             const itemsArray = Array.from(items);
             const treatment = "{{ treatment }}"; // Define treatment variable
+            const MPCR = 0.75; // Define MPCR constant from the Python code
+
+            // Variables for calculations
+            let personalAccount = 0;
+            let groupAccount = 0;
+            let groupPayoff = 0;
+            let pTotal = 0;
+            let pExPayoff = 0;
+            let totalPayoff = 0;
+            let avgPayoffOthers = 0;
 
             itemsArray.sort(() => Math.random() - 0.5);
             rememberList.innerHTML = "";
@@ -117,7 +170,8 @@
             }
 
             function updateAllRanges() {
-                let min; // Define min in the global scope
+                let min;
+                let min_self;
 
                 if (treatment === 'PM' || treatment === 'M') {
                     const slider1 = document.getElementById("slider1");
@@ -129,16 +183,18 @@
                     if (treatment === 'PM') {
                         let p_val = parseInt(slider1.noUiSlider.get());
                         let p_others_val = parseInt(slider2.noUiSlider.get());
-                        min = -(p_val + p_others_val * 3) / 4;
+                        min_self = Math.ceil(-(p_val + p_others_val) / 4);
+                        min = min_self * 3;
                     }
                     if (treatment === 'M') {
                         let p_ex_val = parseInt(slider3.noUiSlider.get());
                         let p_others_val = parseInt(slider2.noUiSlider.get());
-                        min = -(p_ex_val + p_others_val * 3) / 4;
+                        min_self = Math.ceil(-(p_ex_val + p_others_val) / 4);
+                        min = min_self * 3;
                     }
                     min = Math.ceil(min); // Round the min value to the higher integer
-                    if (slider4) updateSliderRange(slider4, min, 10); // Check if slider4 is defined
-                    if (slider5) updateSliderRange(slider5, min, 10); // Check if slider5 is defined
+                    if (slider4) updateSliderRange(slider4, min_self, 10);
+                    if (slider5) updateSliderRange(slider5, min, 30);
                 }
             }
 
@@ -152,6 +208,7 @@
                 },
                 pips: {
                     mode: "steps",
+                    stepped:true,
                     density: 25
                 },
                 step: 1
@@ -163,13 +220,19 @@
                 start: [0],
                 range: {
                     'min': 0,
-                    'max': 10
+                    'max': 30
                 },
+                step: 1,
                 pips: {
-                    mode: "steps",
-                    density: 25
-                },
-                step: 1
+                    mode: 'steps',
+                    density: 100,  // Show all values
+                    format: {
+                        to: function(value) {
+                            // Only show numbers for values divisible by 5
+                            return value % 5 === 0 ? value : '';
+                        }
+                    }
+                }
             });
 
             // Initialize noUiSlider for slider3
@@ -208,7 +271,7 @@
                 start: [0],
                 range: {
                     'min': 0,
-                    'max': 10
+                    'max': 30
                 },
                 pips: {
                     mode: "steps",
@@ -218,18 +281,72 @@
             });
 
             function updateValues() {
-                const p = parseFloat(slider1.noUiSlider.get());
-                const p_others = parseFloat(slider2.noUiSlider.get());
-                const p_ex = parseFloat(slider3.noUiSlider.get());
-                const m = parseFloat(slider4.noUiSlider.get());
-                const m_others = parseFloat(slider5.noUiSlider.get());
+                const p = parseFloat(slider1.noUiSlider.get()) || 0;
+                const p_others = parseFloat(slider2.noUiSlider.get()) || 0;
+                const p_ex = parseFloat(slider3.noUiSlider.get()) || 0;
+                const m = parseFloat(slider4.noUiSlider.get()) || 0;
+                const m_others = parseFloat(slider5.noUiSlider.get()) || 0;
 
-                // Update the hidden input field with the value of slider1
+                // Update the hidden input field with the values
                 document.getElementById('player_p').value = p;
-                document.getElementById('player_p_others').value = p_others;
+                document.getElementById('player_p_others').value = p_others; // Divide by 3 to get average
                 document.getElementById('player_p_ex').value = p_ex;
                 document.getElementById('player_m').value = m;
-                document.getElementById('player_m_others').value = m_others;
+                document.getElementById('player_m_others').value = m_others; // Divide by 3 to get average
+
+                // Calculate values based on treatment type
+                if (treatment === 'P') {
+                    personalAccount = 10 - p;
+                    pTotal = p + p_others;
+                    groupAccount = pTotal;
+                    groupPayoff = Math.round(groupAccount * MPCR * 100) / 100;
+                    totalPayoff = Math.round((personalAccount + groupPayoff) * 100) / 100;
+
+                    // For others in treatment P
+                    const othersPersonalAccount = 10 - (p_others / 3);
+                    avgPayoffOthers = Math.round((othersPersonalAccount + groupPayoff) * 100) / 100;
+
+                } else if (treatment === 'PM') {
+                    personalAccount = 20 - p - m;
+                    pTotal = p + p_others;
+                    groupAccount = pTotal + m + m_others;
+                    groupPayoff = Math.round(groupAccount * MPCR * 100) / 100;
+                    totalPayoff = Math.round((personalAccount + groupPayoff) * 100) / 100;
+
+                    // For others in treatment PM
+                    const othersPersonalAccount = 20 - (p_others / 3) - (m_others / 3);
+                    avgPayoffOthers = Math.round((othersPersonalAccount + groupPayoff) * 100) / 100;
+
+                } else if (treatment === 'M') {
+                    personalAccount = 10 - m;
+                    pExPayoff = 10 - p_ex;
+                    pTotal = p_ex + p_others;
+                    groupAccount = pTotal + m + m_others;
+                    groupPayoff = Math.round(groupAccount * MPCR * 100) / 100;
+                    totalPayoff = Math.round((personalAccount + groupPayoff + pExPayoff) * 100) / 100;
+
+                    // For others in treatment M
+                    const othersPersonalAccount = 10 - (m_others / 3);
+                    avgPayoffOthers = Math.round((othersPersonalAccount + groupPayoff + 10 - (p_others / 3)) * 100) / 100;
+                }
+
+                // Update the displays
+                if (treatment === 'P') {
+                    document.getElementById('balance1').textContent = personalAccount.toFixed(0) + " Tokens";
+                    document.getElementById('group_balance1').textContent = pTotal.toFixed(0) + " Tokens";
+                } else if (treatment === 'PM') {
+                    document.getElementById('balance1').textContent = (10 - p).toFixed(0) + " Tokens";
+                    document.getElementById('group_balance1').textContent = pTotal.toFixed(0) + " Tokens";
+                    document.getElementById('balance2').textContent = personalAccount.toFixed(0) + " Tokens";
+                    document.getElementById('group_balance2').textContent = groupAccount.toFixed(0) + " Tokens";
+                } else if (treatment === 'M') {
+                    document.getElementById('balance1').textContent = (10 - p_ex).toFixed(0) + " Tokens";
+                    document.getElementById('group_balance1').textContent = (pTotal).toFixed(0) + " Tokens";
+                    document.getElementById('group_p_ex').textContent = (30-(pTotal-p_ex)).toFixed(0) + " Tokens";
+                    document.getElementById('balance2').textContent = personalAccount.toFixed(0) + " Tokens";
+                    document.getElementById('group_balance2').textContent = groupAccount.toFixed(0) + " Tokens";
+                }
+
             }
 
             // Attach the updateValues function to the 'update' event for all sliders
@@ -261,14 +378,54 @@
             updateAllRanges();
         });
 
+        // Initialize pip values for all sliders
+        function initializeAllPipValues() {
+            let sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                let pips = slider.querySelectorAll('.noUi-value');
+                pips.forEach(pip => {
+                    const value = parseInt(pip.getAttribute('data-value'));
+                    if (value % 5 !== 0) {
+                        pip.style.visibility = 'hidden';
+                    }
+                });
+            });
+        }
+
+        // Call initialization after a brief delay to ensure DOM is ready
+        setTimeout(initializeAllPipValues, 0);
+
         document.addEventListener("DOMContentLoaded", function () {
             function highlightActivePip(slider) {
+                // Get the current range of the slider
+                const range = slider.noUiSlider.options.range;
+                const minValue = range['min'];
+                const maxValue = range['max'];
+
+                // Reset all pip values
                 let pips = slider.querySelectorAll('.noUi-value');
-                pips.forEach(pip => pip.classList.remove('active-pip'));
-                let value = parseInt(slider.noUiSlider.get());
-                let activePip = slider.querySelector(`.noUi-value[data-value="${value}"]`);
+                pips.forEach(pip => {
+                    const value = parseInt(pip.getAttribute('data-value'));
+                    // Keep min value visible, hide others except multiples of 5
+                    if (value !== minValue && value != maxValue && value !=0 ) {
+                        pip.style.visibility = 'hidden';
+                    }
+                    pip.classList.remove('noUi-value-active');
+                });
+
+                // Get current slider value and highlight it
+                let currentValue = Math.round(slider.noUiSlider.get());
+                let activePip = slider.querySelector(`.noUi-value[data-value="${currentValue}"]`);
                 if (activePip) {
-                    activePip.classList.add('active-pip');
+                    activePip.style.visibility = 'visible';
+                    activePip.textContent = currentValue;
+                    activePip.classList.add('noUi-value-active');
+                }
+
+                // Ensure min value is always visible
+                let minPip = slider.querySelector(`.noUi-value[data-value="${minValue}"]`);
+                if (minPip) {
+                    minPip.style.visibility = 'visible';
                 }
             }
 
@@ -280,6 +437,5 @@
                 highlightActivePip(slider); // Initial call to set the active pip
             });
         });
-</script>
-
+    </script>
 {{ endblock }}

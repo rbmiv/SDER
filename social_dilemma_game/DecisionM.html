@@ -105,16 +105,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const p = {{ p }};
     const p_ex = {{p_ex}};
 
+    // Array to keep track of sliders and their active pips
+    const sliders = [];
+
     for (let i = 0; i < 11; i++) {
         let j = p_ex + p + i * step;
+        let k = j + 2;
+        k = k > 40 ? 40 : k;
         document.getElementById(`random-number-${i}`).innerText = `${i}`;
-        document.getElementById(`token-info-${i}`).innerText = `${j} Tokens`;
+        document.getElementById(`token-info-${i}`).innerText = `${j}-${k} Tokens`;
 
         let slider = document.getElementById(`slider${i}`);
         let sliderPercentage = ((10 + Math.floor((p + p_ex + i*step)/4)) / 20) * 100;
         slider.style.width = `${sliderPercentage}%`;
 
-        let initialTokens = 10; // Assuming 10 initial tokens in the individual account
+        let initialTokens = 10;
+        let minValue = -Math.floor((p + p_ex + i*step)/4);
+        let maxValue = 10;
 
         noUiSlider.create(slider, {
             start: [0],
@@ -122,39 +129,87 @@ document.addEventListener("DOMContentLoaded", function () {
             animate: false,
             pips: {
                 mode: "steps",
-                density: 25
+                density: 25,
+                format: {
+                    to: function(value) {
+                        // Initially don't show any values
+                        return value;
+                    }
+                }
             },
             range: {
-                min: -Math.floor((p + p_ex + i*step)/4), // Minimum is negative of the average tokens for that row
-                max: 10
+                'min': minValue,
+                'max': maxValue
             },
             step: 1
         });
 
-        // Each slider needs its own reference to an active pip, so we use an array or object to store them
-        let activePips = []; // Initialize an array to keep track of active pips for each slider
+        sliders.push(slider);
 
         slider.noUiSlider.on("update", function (values, handle) {
             let sliderValue = parseInt(values[handle]);
-            let remainingTokens = initialTokens - sliderValue + " Tokens";
 
             // Update the hidden input field with the slider value
             document.getElementById(`player_m${i}`).value = sliderValue;
 
-            // Highlight the active pip logic
-            if (activePips[i]) {
-                activePips[i].classList.remove("active-pip");
-            }
-
-            var dataValue = Math.round(values[0]);
-            activePips[i] = slider.querySelector('.noUi-value[data-value="' + dataValue + '"]');
-
-            if (activePips[i]) {
-                activePips[i].classList.add('active-pip');
-            }
-
+            // Highlight active pip using the highlightActivePip function
+            highlightActivePip(slider);
         });
     }
+
+    // Function to highlight the active pip and show only min, max, 0, and current values
+    function highlightActivePip(slider) {
+        // Get the current range of the slider
+        const range = slider.noUiSlider.options.range;
+        const minValue = range['min'];
+        const maxValue = range['max'];
+
+        // Reset all pip values
+        let pips = slider.querySelectorAll('.noUi-value');
+        pips.forEach(pip => {
+            const value = parseInt(pip.getAttribute('data-value'));
+            // Keep min value, max value, and 0 visible, hide others
+            if (value !== minValue && value !== maxValue && value !== 0) {
+                pip.style.visibility = 'hidden';
+            }
+            pip.classList.remove('noUi-value-active');
+        });
+
+        // Get current slider value and highlight it
+        let currentValue = Math.round(slider.noUiSlider.get());
+        let activePip = slider.querySelector(`.noUi-value[data-value="${currentValue}"]`);
+        if (activePip) {
+            activePip.style.visibility = 'visible';
+            activePip.textContent = currentValue;
+            activePip.classList.add('noUi-value-active');
+        }
+
+        // Ensure min, max and 0 values are always visible
+        let minPip = slider.querySelector(`.noUi-value[data-value="${minValue}"]`);
+        if (minPip) {
+            minPip.style.visibility = 'visible';
+            minPip.textContent = minValue;
+        }
+
+        let maxPip = slider.querySelector(`.noUi-value[data-value="${maxValue}"]`);
+        if (maxPip) {
+            maxPip.style.visibility = 'visible';
+            maxPip.textContent = maxValue;
+        }
+
+        let zeroPip = slider.querySelector(`.noUi-value[data-value="0"]`);
+        if (zeroPip && minValue !== 0 && maxValue !== 0) {
+            zeroPip.style.visibility = 'visible';
+            zeroPip.textContent = '0';
+        }
+    }
+
+    // Initialize the pips for all sliders
+    setTimeout(function() {
+        sliders.forEach(slider => {
+            highlightActivePip(slider);
+        });
+    }, 0);
 });
 </script>
 {{ endblock }}

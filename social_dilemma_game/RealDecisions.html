@@ -5,7 +5,7 @@
 {{ block title }}
 
 <div class="narrow-body">
-    Real Decision Rounds
+    Real Decisions
 
 </div>
 {{ endblock }}
@@ -18,7 +18,8 @@
     </p>
 
     <p class="notice-text">
-        There will be <b>only one round</b>, so <b>think carefully</b> about your choices.
+        <b>You will only make {{if treatment == 'PM'}}each{{endif}}{{if treatment != 'PM'}}your{{endif}} Decision once</b>,
+        so <b>think carefully</b> about your choices.
     </p>
 
     <br>

@@ -4,7 +4,7 @@
 
 {{ block title }}
 <div class="narrow-body">
-    Practice Results
+    Payoff Calculator Results
 </div>
 {{ endblock }}
 
@@ -13,7 +13,7 @@
 {{if treatment == 'M'}}
 <div class="results-header">Random Draws</div>
 <div><b>Yours:</b> {{p_ex}}</div>
-<div><b>Average of Others:</b> {{p_others}}</div>
+<div><b>Total of Others:</b> {{p_others}}</div>
 <br>
 {{endif}}
 
@@ -22,21 +22,21 @@
 
 {{if treatment == 'M'}}
 <div><b>Yours:</b> {{m}} Tokens</div>
-<div><b>Average of Others</b> : {{m_others}} Tokens</div>
+<div><b>Total of Others</b> : {{m_others}} Tokens</div>
 <br>
 {{endif}}
 
 {{if treatment == 'P'}}
 <div><b>Your Decision:</b> {{p}} Tokens</div>
-<div><b>Average of Others:</b> {{p_others}} Tokens</div>
+<div><b>Total of Others:</b> {{p_others}} Tokens</div>
 <br>
 {{endif}}
 
 {{if treatment == 'PM'}}
 <div><b>Your Decision 1:</b> {{p}} Tokens</div>
-<div><b>Average Decision 1 of Others:</b> {{p_others}} Tokens</div>
+<div><b>Total of Others' Decision 1:</b> {{p_others}} Tokens</div>
 <div><b>Your Decision 2:</b> {{m}} Tokens</div>
-<div><b>Average Decision 2 of Others:</b> {{m_others}} Tokens</div>
+<div><b>Total of Others' Decision 2:</b> {{m_others}} Tokens</div>
 <br>
 {{endif}}
 
@@ -47,9 +47,9 @@
         <br>
 
 <div class="results-header">Practice Earnings:</div>
-    {{if treatment == 'M'}}<div><b>Bonus:</b> {{p_ex_payoff}} ECUs</div>{{endif}}
-    <div><b>Your Individual Account:</b> {{personal_account}} ECUs</div>
-    <div><b>Group Account:</b> {{group_payoff}} ECUs</div>
+    {{if treatment == 'M'}}<div><b>Bonus:</b> {{p_ex_payoff}} ECUs </div>{{endif}}
+    <div><b>Your Individual Account:</b> {{personal_account}} ECUs (from {{personal_account}} Tokens)</div>
+    <div><b>Group Account:</b> {{group_payoff}} ECUs (from {{group_account}} Tokens)</div>
         <br>
     <div style="font-size:16pt;"><b>Your Total Practice Earnings:</b> {{total_payoff}} ECUs</div>
 <br>
