@@ -73,6 +73,7 @@
   <br>
 
 
+  {{ formfield_errors 'm0' }}
   {{ formfield_errors 'm1' }}
   {{ formfield_errors 'm2' }}
   {{ formfield_errors 'm3' }}
@@ -109,18 +110,51 @@ document.addEventListener("DOMContentLoaded", function () {
     const sliders = [];
 
     for (let i = 0; i < 11; i++) {
-        let j = p_ex + p + i * step;
-        let k = j + 2;
-        k = k > 40 ? 40 : k;
+        // Display the average (which aligns with m_index)
         document.getElementById(`random-number-${i}`).innerText = `${i}`;
-        document.getElementById(`token-info-${i}`).innerText = `${j}-${k} Tokens`;
+
+        // Calculate the range of values that would round to this m_index
+        let lowerBound = Math.max(0, Math.round(i * 3 - 1.5));
+        let upperBound = Math.min(30, Math.round(i * 3 + 1.5));
+
+        // Adjust for special cases
+        if (i === 0) {
+            // m0 should include 0 and 1
+            lowerBound = 0;
+            upperBound = 1;
+        } else if (i === 10) {
+            // m10 should include 29 and 30
+            lowerBound = 29;
+            upperBound = 30;
+        } else {
+            // For other cases, calculate the exact bounds
+            const centralValue = i * 3;
+            lowerBound = centralValue - 1;
+            upperBound = centralValue + 1;
+
+            // Ensure bounds are within valid range
+            lowerBound = Math.max(0, lowerBound);
+            upperBound = Math.min(30, upperBound);
+        }
+
+        // Add p and p_ex to get the actual token values
+        const adjustedLower = p + p_ex + lowerBound;
+        const adjustedUpper = p + p_ex + upperBound;
+
+        // Display the token range
+        if (lowerBound === upperBound) {
+            document.getElementById(`token-info-${i}`).innerText = `${adjustedLower} Tokens`;
+        } else {
+            document.getElementById(`token-info-${i}`).innerText = `${adjustedLower}-${adjustedUpper} Tokens`;
+        }
+
 
         let slider = document.getElementById(`slider${i}`);
-        let sliderPercentage = ((10 + Math.floor((p + p_ex + i*step)/4)) / 20) * 100;
+        let sliderPercentage = ((10 + Math.floor((adjustedLower)/4)) / 20) * 100;
         slider.style.width = `${sliderPercentage}%`;
 
         let initialTokens = 10;
-        let minValue = -Math.floor((p + p_ex + i*step)/4);
+        let minValue = -Math.floor((adjustedLower)/4);
         let maxValue = 10;
 
         noUiSlider.create(slider, {
