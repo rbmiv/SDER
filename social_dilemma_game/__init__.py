@@ -77,7 +77,7 @@ class Player(BasePlayer):
     p = models.IntegerField(initial=0, min=0, max=10)
     p_ex = models.IntegerField(initial=0, min=0, max=10)
     p_ex_id = models.IntegerField(initial=999)
-    m0 = models.IntegerField(initial=0, min=0, max=10)
+    m0 = models.IntegerField(initial=0, min=-10, max=10)
     m1 = models.IntegerField(initial=0, min=-10, max=10)
     m2 = models.IntegerField(initial=0, min=-10, max=10)
     m3 = models.IntegerField(initial=0, min=-10, max=10)
